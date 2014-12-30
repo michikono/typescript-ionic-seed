@@ -9,8 +9,8 @@ var sh = require('shelljs');
 var notify = require("gulp-notify");
 
 var paths = {
-  sass: ['./scss/**/*.scss'],
-  ts: ['./src/**/*.ts'],
+  sass: ['./src/scss/**/*.scss', './src/scss/*.scss'],
+  ts: ['./src/*.ts', './src/**/*.ts', './www/lib/typings/**/*.d.ts', '*.d.ts'],
   html: ['./src/**/*.html'],
   test: ['./www/test/**/*.js']
 };
@@ -25,7 +25,7 @@ gulp.task('clean', function () {
 
 var sourcemaps = require('gulp-sourcemaps');
 gulp.task('sass', function (done) {
-  gulp.src(['./scss/*.scss'])
+  gulp.src(paths.sass)
     .pipe(sourcemaps.init({debug: true}))
     .pipe(sass({sync: true}))
     .pipe(sourcemaps.write())
@@ -41,7 +41,7 @@ gulp.task('sass', function (done) {
 var ts = require('gulp-typescript');
 var eventStream = require('event-stream');
 gulp.task('ts', function () {
-  var tsResult = gulp.src(['./src/*.ts', './src/**/*.ts', './typings/**/*.d.ts', '*.d.ts', '!src/**/*.spec.ts'])
+  var tsResult = gulp.src(['./src/*.ts', './src/**/*.ts', './www/lib/typings/**/*.d.ts', '*.d.ts', '!src/**/*.spec.ts'])
     .pipe(sourcemaps.init({debug: true}))
     .pipe(ts({
       // set this to true if your project is strict with types
@@ -54,7 +54,7 @@ gulp.task('ts', function () {
       noExternalResolve: true
     }));
 
-  var tsTestResult = gulp.src(['./src/*.ts', './src/**/*.ts', './typings/**/*.d.ts', '*.d.ts'])
+  var tsTestResult = gulp.src(paths.ts)
     .pipe(sourcemaps.init({debug: true}))
     .pipe(ts({
       // set this to true if your project is strict with types
@@ -95,7 +95,7 @@ gulp.task('tslint', function () {
 var templateCache = require('gulp-angular-templatecache');
 var htmlmin = require('gulp-htmlmin');
 gulp.task('html', function () {
-  return gulp.src('src/**/*.html')
+  return gulp.src(paths.html)
     .pipe(sourcemaps.init({debug: true}))
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(templateCache({standalone: true}))
