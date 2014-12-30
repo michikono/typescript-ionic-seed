@@ -37,20 +37,31 @@ gulp
 Development
 ===========
 
-To enable the gulp processes (SASS compilation):
+To compile SASS:
 
 ```bash
-gulp watch
+gulp sass
 ```
 
-To run tests
+To compile TypeScript files:
+
+```bash
+gulp ts
+```
+
+To run tests (requires the `ts` job to have been run successfully):
 
 ```bash
 gulp test
 ```
 
-It's assumed development is being done in a Typescript supported IDE such as Webstorm. If you intend to run it yourself,
-see this: https://www.npmjs.com/package/gulp-typescript
+To enable automatic SASS compilation, TypeScript compilation, and test running:
+
+```bash
+gulp watch
+```
+
+*Do not enable IDE compilation of TypeScript as the gulp watcher will handle this for you.*
 
 Adding new dependencies
 -----------------------
