@@ -10,15 +10,15 @@ before_script:
   - npm install -g gulp
   - npm install -g ionic
   - npm install -g bower
-  - npm install
-  - bower install
   - npm install -g protractor
+  - npm run setup
   - npm run travis-server > /dev/null &
   - npm run update-webdriver
-  - npm run setup
-  - sleep 2 # give server time to start
+  - sleep 3 # give server time to start
 
 script:
   - gulp
+  - echo "Running unit tests..."
   - node_modules/.bin/karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
+  - echo "Running functional tests..."
   - protractor e2e.conf.js --browser=firefox
