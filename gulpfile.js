@@ -1,4 +1,6 @@
 var gulp = require('gulp');
+var argv = require('yargs').argv; // for args parsing
+var spawn = require('child_process').spawn;
 var gutil = require('gulp-util');
 var bower = require('bower');
 var concat = require('gulp-concat-sourcemap');
@@ -26,13 +28,30 @@ gulp.task('default', ['ts', 'tsTest', 'html', 'lib', 'sass', 'fonts', 'tslint'])
  * this task re-builds the project before watching it
  */
 gulp.task('watch', function () {
+  var p;
+
+  gulp.watch('gulpfile.js', spawnChildren);
+  spawnChildren();
+
+  function spawnChildren(e) {
+    // kill previous spawned process
+    if (p) {
+      p.kill();
+    }
+
+    // `spawn` a child `gulp` process linked to the parent `stdio`
+    p = spawn('gulp', ['watch-tasks'], {stdio: 'inherit'});
+  }
+});
+
+gulp.task('watch-tasks', function () {
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.ts.concat(paths.tsds), ['ts', 'tsTest', 'tslint']);
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.fonts, ['fonts']);
   gulp.watch(paths.lib, ['lib']);
   gulp.watch(paths.test, ['tdd']);
-});
+})
 
 /*
  * purges all generated files
