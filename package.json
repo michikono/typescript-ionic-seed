@@ -40,7 +40,9 @@
   },
   "scripts": {
     "postinstall": "bower install",
-    "presetup": "npm install",
+    "pretsd": "npm install",
+    "tsd": "tsd reinstall --overwrite",
+    "presetup": "npm run tsd",
     "setup": "gulp",
     "preserver": "npm run setup",
     "server": "ionic serve --port 8000",

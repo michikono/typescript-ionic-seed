@@ -19,4 +19,4 @@ before_script:
 script:
   - gulp
   - node_modules/.bin/karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
-  - node_modules/.bin/protractor e2e.conf.js --browser=firefox
+  - protractor e2e.conf.js --browser=firefox

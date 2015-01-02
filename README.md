@@ -1,4 +1,4 @@
-TypeScript Ionic Seed - Overview
+TypeScript Ionic Seed - Overview [![Build Status](https://travis-ci.org/michikono/typescript-ionic-seed.svg?branch=master)](https://travis-ci.org/michikono/typescript-ionic-seed)
 ================================
 
 This is a seed for a TypeScript/Ionic project. What makes this seed _awesome_:
@@ -13,6 +13,7 @@ This is a seed for a TypeScript/Ionic project. What makes this seed _awesome_:
 * Unlike most other Ioinc/Angular/folders-by-feature seeds, this one also includes test examples (unit and functional/E2E tests in TypeScript)
 * Everything uses source maps so failing tests and broken code will show you the `.ts` file that is causing it
 * All Font-awesome icons working with no additional configuration!
+* A working Travis CI integration ([check it out!](https://travis-ci.org/michikono/typescript-ionic-seed))
 
 Setup
 =====
@@ -21,9 +22,9 @@ This setup requires npm and xcode to be installed.
 
 ```bash
 npm install -g typescript
-npm install tsd@next -g
 npm install -g gulp
 npm install -g ionic
+npm install tsd@next -g
 npm install -g bower
 npm install -g protractor
 npm run setup
