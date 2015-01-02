@@ -13,18 +13,19 @@ var sourcemaps = require('gulp-sourcemaps');
 
 var testFilePattern = 'src/**/*.spec.ts';
 var paths = {
-  e2e: ['e2e-tests/**/*.e2e.ts', 'e2e-tests/*.e2e.ts', './lib/definitions/e2e-definitions/**/*.d.ts'],
+  e2e: ['src/**/*.e2e.ts', './lib/definitions/e2e-definitions/**/*.d.ts'],
   sass: ['./assets/scss/**/*.scss', './assets/scss/*.scss'],
-  ts: ['./src/*.ts', './src/**/*.ts'],
-  tsds: ['*.d.ts', './tsd/**/*.d.ts', './src/*.d.ts', './src/**/*.d.ts', './lib/definitions/**/*.d.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts'],
+  ts: ['./src/*.ts', './src/**/*.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts'],
+  tsds: ['*.d.ts', './tsd/**/*.d.ts', './src/*.d.ts', './src/**/*.d.ts', './lib/definitions/**/*.d.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts', '!./src/**/*.e2e.ts'],
   html: ['./src/**/*.html'],
   lib: ['./bower_components/ionic/js/ionic.bundle.js'],
   fonts: ['./bower_components/ionic/fonts/*', './assets/fonts/*'],
+  index: ['./assets/index.html'],
   images: ['./assets/images/*'],
   test: ['./www/test/unit.js']
 };
 
-gulp.task('default', ['ts', 'tsTest', 'tsE2E', 'html', 'lib', 'sass', 'fonts', 'images', 'tslint']);
+gulp.task('default', ['ts', 'tsTest', 'tsE2E', 'html', 'lib', 'sass', 'fonts', 'images', 'index', 'tslint']);
 
 /*
  * this task re-builds the project before watching it
@@ -53,6 +54,7 @@ gulp.task('watch-tasks', function () {
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.fonts, ['fonts']);
   gulp.watch(paths.images, ['images']);
+  gulp.watch(paths.index, ['index']);
   gulp.watch(paths.lib, ['lib']);
   gulp.watch(paths.test, ['tdd']);
 })
@@ -61,7 +63,7 @@ gulp.task('watch-tasks', function () {
  * purges all generated files
  */
 var clean = require('gulp-clean');
-gulp.task('clean', ['cleanCss', 'cleanHtml', 'cleanFonts', 'cleanImages']);
+gulp.task('clean', ['cleanCss', 'cleanHtml', 'cleanFonts', 'cleanImages', 'cleanIndex']);
 gulp.task('cleanCss', function () {
   return gulp.src(['./www/css'], {read: false})
     .pipe(clean());
@@ -76,6 +78,10 @@ gulp.task('cleanImages', function () {
 });
 gulp.task('cleanHtml', function () {
   return gulp.src(['./www/js/template.js'], {read: false})
+    .pipe(clean());
+});
+gulp.task('cleanIndex', function () {
+  return gulp.src(['./www/index.html'], {read: false})
     .pipe(clean());
 });
 
@@ -104,6 +110,15 @@ gulp.task('fonts', ['cleanFonts'], function () {
 gulp.task('images', ['cleanImages'], function () {
   return gulp.src(paths.images)
     .pipe(gulp.dest('./www/images'));
+});
+
+/*
+ * copies index.html from assets folder
+ */
+gulp.task('index', ['cleanIndex'], function () {
+  return gulp.src(paths.index)
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest('./www'));
 });
 
 /*

@@ -27,10 +27,7 @@ npm install -g gulp
 npm install -g ionic
 npm install -g bower
 npm install -g protractor
-npm install
-bower install
-tsd reinstall --overwrite
-gulp
+npm run setup
 ionic platform add ios
 ```
 
@@ -40,22 +37,22 @@ Development
 To compile SASS:
 
 ```bash
-gulp sass
+npm run css
 ```
 
 To compile TypeScript files:
 
 ```bash
-gulp ts
+npm run ts
 ```
 
 To enable automatic SASS compilation, TypeScript compilation, and test running:
 
 ```bash
-gulp watch
+npm run watch
 ```
 
-*Do not enable IDE compilation of TypeScript as the gulp watcher will handle this for you.*
+*Do not enable IDE compilation of TypeScript as the file watcher in this project will handle this for you.*
 
 Testing
 -------
@@ -63,16 +60,15 @@ Testing
 To run unit tests (requires the `ts` job to have been run successfully):
 
 ```bash
-gulp test
+npm run test
 ```
 
-To run end-to-end (e2e) tests, do these three things:
+To run end-to-end (E2E) tests, do these two steps in order:
 
-1. `gulp tsE2E` (compiles the E2E files)
-2. `webdriver-manager start` (starts a web server)
-3. `npm run protractor` (runs the tests in your browser)
+1. `npm run server` (starts a web server; run this just once in its own tab)
+2. `npm run e2e` (runs the tests in your browser; run it repeatedly)
 
-
+End-to-end tests tests are located at `src/**/*.e2e.ts`
 
 Adding dependencies
 -----------------------
@@ -89,8 +85,7 @@ Web
 ---
 
 ```bash
-gulp
-ionic serve
+npm run server
 ```
 
 iPhone
@@ -101,14 +96,17 @@ ionic build ios
 ionic emulate ios
 ```
 
-
 Notes
 =====
 
 * The `module` syntax is used to create actual TypeScript modules -- code inside a module is scoped to it. Each feature folder uses its own module name and the shared scope is used in the unit tests to access the declarations without requiring verbose prefixes.
 * The `angular.module` syntax is an Angular thing for componentizing code. To avoid confusion, wherever possible, the two types of module references should be the same in a file/feature.
-* You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat); if anything breaks in your `tsd.d.ts` file, just run `tsd reinstall --overwrite`
-* When creating interfaces, you can declare them by prefixing the `module` declaration with `declare` (http://stackoverflow.com/questions/17635033/error-ts1046-declare-modifier-required-for-top-level-element).
-* Place images, fonts, scss, etc. in `assets/`; always assume the `www/` folder is volatile!
-* `test/e2e.js` - compiled end to end tests will end up here (from `e2e/**/*.e2e.ts`)
-* `test/unit.js` - compiled unit tests will end up here (from `src/**/*.spec.ts`)
+* You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat); if anything breaks in your `tsd.d.ts` file, [double check the paths didn't get munged](https://github.com/DefinitelyTyped/tsd/issues/112)
+* When creating interfaces in `.d.ts` files, you can declare them by [prefixing the `module` declaration with `declare`](http://stackoverflow.com/questions/17635033/error-ts1046-declare-modifier-required-for-top-level-element).
+* Always assume the `www/` folder is scratch space -- including `index.html`!
+* Place images, fonts, scss, etc. in `assets/`
+* Don't mess with files in `www`! For example, `test/e2e.js` - compiled end to end tests will end up here (from `src/**/*.e2e.ts`); `test/unit.js` - compiled unit tests will end up here (from `src/**/*.spec.ts`)
+* The strange testing convention in the E2E files is the Page [Object pattern](https://code.google.com/p/selenium/wiki/PageObjects). Basically you hide DOM-level details from tests.
+* Note that since E2E code doesn't technically touch the main code base directly, there's no need to modularize it
+
+
