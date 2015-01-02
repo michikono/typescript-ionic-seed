@@ -25,7 +25,7 @@ var paths = {
   test: ['./www/test/unit.js']
 };
 
-gulp.task('default', ['ts', 'tsTest', 'tsE2E', 'html', 'lib', 'sass', 'fonts', 'images', 'index', 'tslint']);
+gulp.task('default', ['html', 'lib', 'sass', 'fonts', 'images', 'index', 'tsE2E']);
 
 /*
  * this task re-builds the project before watching it
@@ -44,18 +44,19 @@ gulp.task('watch', function () {
     // `spawn` a child `gulp` process linked to the parent `stdio`
     p = spawn('gulp', ['watch-tasks'], {stdio: 'inherit'});
   }
+  spawnChildren();
 });
 
 gulp.task('watch-tasks', function () {
   gulp.watch(paths.e2e, ['tsE2E', 'tslint']);
   gulp.watch(paths.sass, ['sass']);
-  gulp.watch(paths.ts.concat(paths.tsds), ['ts', 'tsTest', 'tslint']);
+  gulp.watch(paths.ts.concat(paths.tsds), ['ts', 'tsTest', 'tsE2E', 'tslint']);
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.fonts, ['fonts']);
   gulp.watch(paths.images, ['images']);
   gulp.watch(paths.index, ['index']);
   gulp.watch(paths.lib, ['lib']);
-  gulp.watch(paths.test, ['tdd']);
+  gulp.watch(paths.test, ['runJustTest']);
 })
 
 /*
@@ -141,7 +142,9 @@ gulp.task('sass', ['cleanCss'], function (done) {
  * Compiles TypeScript
  */
 var ts = require('gulp-typescript');
+var ngAnnotate = require('gulp-ng-annotate');
 var eventStream = require('event-stream');
+var uglify = require('gulp-uglify');
 var tsProject = ts.createProject({
   noImplicitAny: false,
   removeComments: true,
@@ -156,6 +159,8 @@ gulp.task('ts', function () {
     .pipe(sourcemaps.init({debug: true}))
     .pipe(ts(tsProject))
     .pipe(concat('app.js'))
+    .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
+    .pipe(uglify({mangle: true}))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./www/js'))
 });
@@ -174,6 +179,7 @@ gulp.task('tsTest', ['ts'], function () {
     .pipe(sourcemaps.init({debug: true}))
     .pipe(ts(tsTestProject))
     .pipe(concat('unit.js'))
+    .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./www/test'))
 });
@@ -192,6 +198,7 @@ gulp.task('tsE2E', ['ts'], function () {
     .pipe(sourcemaps.init({debug: true}))
     .pipe(ts(tsE2EProject))
     .pipe(concat('e2e.js'))
+    .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./www/test'))
 });
@@ -201,7 +208,7 @@ gulp.task('tsE2E', ['ts'], function () {
  */
 var plumber = require('gulp-plumber');
 var tslint = require('gulp-tslint');
-gulp.task('tslint', ['tsTest'], function () {
+gulp.task('tslint', [], function () {
   gulp.src(['src/**/*.ts', '!src/**/*.d.ts'])
     .pipe(tslint())
     .pipe(notify(function (file) {
@@ -234,10 +241,10 @@ gulp.task('html', ['cleanHtml'], function () {
 });
 
 /*
- * runs tests
+ * just runs existing compiled tests (not good for standalone, but good for watcher)
  */
 var karma = require('gulp-karma');
-gulp.task('test', ['tsTest'], function (done) {
+gulp.task('runJustTest', [], function (done) {
   // Be sure to return the stream
   // NOTE: Using the fake './foobar' so as to run the files
   // listed in karma.conf.js INSTEAD of what was passed to
@@ -249,10 +256,8 @@ gulp.task('test', ['tsTest'], function (done) {
     }));
 });
 
-/*
- * Runs autotest watcher
- */
-gulp.task('tdd', ['tsTest'], function (done) {
+// compiles AND runs the tests
+gulp.task('test', ['tsTest'], function (done) {
   // Be sure to return the stream
   // NOTE: Using the fake './foobar' so as to run the files
   // listed in karma.conf.js INSTEAD of what was passed to
@@ -260,7 +265,7 @@ gulp.task('tdd', ['tsTest'], function (done) {
   return gulp.src('./foobar')
     .pipe(karma({
       configFile: 'karma.conf.js',
-      action: 'watch'
+      action: 'run'
     }));
 });
 
