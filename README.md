@@ -49,12 +49,6 @@ To compile TypeScript files:
 gulp ts
 ```
 
-To run tests (requires the `ts` job to have been run successfully):
-
-```bash
-gulp test
-```
-
 To enable automatic SASS compilation, TypeScript compilation, and test running:
 
 ```bash
@@ -66,7 +60,17 @@ gulp watch
 Testing
 -------
 
-`webdriver-manager start`
+To run unit tests (requires the `ts` job to have been run successfully):
+
+```bash
+gulp test
+```
+
+To run end-to-end (e2e) tests, do these three things:
+
+1. `gulp tsE2E` (compiles the E2E files)
+2. `webdriver-manager start` (starts a web server)
+3. `npm run protractor` (runs the tests in your browser)
 
 
 
@@ -103,6 +107,8 @@ Notes
 
 * The `module` syntax is used to create actual TypeScript modules -- code inside a module is scoped to it. Each feature folder uses its own module name and the shared scope is used in the unit tests to access the declarations without requiring verbose prefixes.
 * The `angular.module` syntax is an Angular thing for componentizing code. To avoid confusion, wherever possible, the two types of module references should be the same in a file/feature.
-* You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat)
+* You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat); if anything breaks in your `tsd.d.ts` file, just run `tsd reinstall --overwrite`
 * When creating interfaces, you can declare them by prefixing the `module` declaration with `declare` (http://stackoverflow.com/questions/17635033/error-ts1046-declare-modifier-required-for-top-level-element).
 * Place images, fonts, scss, etc. in `assets/`; always assume the `www/` folder is volatile!
+* `test/e2e.js` - compiled end to end tests will end up here (from `e2e/**/*.e2e.ts`)
+* `test/unit.js` - compiled unit tests will end up here (from `src/**/*.spec.ts`)

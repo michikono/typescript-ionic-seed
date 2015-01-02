@@ -13,17 +13,18 @@ var sourcemaps = require('gulp-sourcemaps');
 
 var testFilePattern = 'src/**/*.spec.ts';
 var paths = {
+  e2e: ['e2e-tests/**/*.e2e.ts', 'e2e-tests/*.e2e.ts', './lib/definitions/e2e-definitions/**/*.d.ts'],
   sass: ['./assets/scss/**/*.scss', './assets/scss/*.scss'],
   ts: ['./src/*.ts', './src/**/*.ts'],
-  tsds: ['*.d.ts', './tsd/**/*.d.ts', './src/*.d.ts', './src/**/*.d.ts', './lib/definitions/**/*.d.ts'],
+  tsds: ['*.d.ts', './tsd/**/*.d.ts', './src/*.d.ts', './src/**/*.d.ts', './lib/definitions/**/*.d.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts'],
   html: ['./src/**/*.html'],
   lib: ['./bower_components/ionic/js/ionic.bundle.js'],
   fonts: ['./bower_components/ionic/fonts/*', './assets/fonts/*'],
   images: ['./assets/images/*'],
-  test: ['./www/test/**/*.js']
+  test: ['./www/test/unit.js']
 };
 
-gulp.task('default', ['ts', 'tsTest', 'html', 'lib', 'sass', 'fonts', 'images', 'tslint']);
+gulp.task('default', ['ts', 'tsTest', 'tsE2E', 'html', 'lib', 'sass', 'fonts', 'images', 'tslint']);
 
 /*
  * this task re-builds the project before watching it
@@ -46,6 +47,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('watch-tasks', function () {
+  gulp.watch(paths.e2e, ['tsE2E']);
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.ts.concat(paths.tsds), ['ts', 'tsTest', 'tslint']);
   gulp.watch(paths.html, ['html']);
@@ -157,7 +159,25 @@ gulp.task('tsTest', ['ts'], function () {
   return gulp.src(paths.tsds.concat(paths.ts))
     .pipe(sourcemaps.init({debug: true}))
     .pipe(ts(tsTestProject))
-    .pipe(concat('tests.js'))
+    .pipe(concat('unit.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./www/test'))
+});
+
+var tsE2EProject = ts.createProject({
+  noImplicitAny: false,
+  removeComments: false,
+  module: 'commonjs',
+  target: 'ES5',
+  sortOutput: true,
+  declarationFiles: false,
+  noExternalResolve: true
+});
+gulp.task('tsE2E', ['ts'], function () {
+  return gulp.src(paths.e2e)
+    .pipe(sourcemaps.init({debug: true}))
+    .pipe(ts(tsE2EProject))
+    .pipe(concat('e2e.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./www/test'))
 });

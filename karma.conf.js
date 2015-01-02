@@ -17,7 +17,7 @@ module.exports = function (config) {
     files: [
       'bower_components/ionic/js/ionic.bundle.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'www/test/**/*.js'
+      'www/test/unit.js'
     ],
 
 
