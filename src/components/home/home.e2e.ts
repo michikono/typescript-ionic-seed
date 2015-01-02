@@ -12,7 +12,7 @@ module typeScriptIonicApp.components.home {
 
         isRendered():Boolean {
             return element(by.cssContainingText('h1', 'Home')).isPresent() &&
-                element(by.partialButtonText('Logout')).isPresent()
+                element(by.partialButtonText('Logout')).isPresent();
         }
 
         getCorrectUrl():string {
