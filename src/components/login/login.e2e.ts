@@ -21,8 +21,7 @@ module typeScriptIonicApp.components.login {
         }
 
         isRendered():Boolean {
-            return element(by.cssContainingText('h1', 'Login')).isPresent() &&
-                element(by.buttonText('Login')).isPresent();
+            return element(by.cssContainingText('h1', 'Login')).isPresent();
         }
 
         getUsername():Boolean {

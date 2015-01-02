@@ -11,8 +11,7 @@ module typeScriptIonicApp.components.home {
         }
 
         isRendered():Boolean {
-            return element(by.cssContainingText('h1', 'Home')).isPresent() &&
-                element(by.partialButtonText('Logout')).isPresent();
+            return element(by.cssContainingText('h1', 'Home')).isPresent();
         }
 
         getCorrectUrl():string {
