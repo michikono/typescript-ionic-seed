@@ -19,6 +19,6 @@ before_script:
 script:
   - gulp
   - echo "Running unit tests..."
-  - node_modules/bin/karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
+  - ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
   - echo "Running functional tests..."
   - protractor e2e.conf.js --browser=firefox
