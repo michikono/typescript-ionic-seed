@@ -10,6 +10,7 @@ before_script:
   - npm install -g gulp
   - npm install -g ionic
   - npm install -g bower
+  - bower install
   - npm install -g protractor
   - npm run travis-server > /dev/null &
   - npm run update-webdriver
