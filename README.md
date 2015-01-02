@@ -1,17 +1,16 @@
-Overview
-========
+TypeScript Ionic Seed - Overview
+================================
 
-This is a seed for an Ionic/TypeScript setup. Features of this project:
+This is a seed for a TypeScript/Ionic project. What makes this seed _awesome_:
 
-* All Angular/Ionic code using TypeScript
-* Ready to go for use in Ionic
-* Gulp instead of Grunt (some may debate this choice)
+* All code using TypeScript!
+* Ready to go for use in Ionic (maybe Angular too, but that's for later...)
+* Gulp instead of Grunt (some may debate this choice), but hides this detail from you via `npm run`
 * The codebase uses many best practices found [here](https://github.com/johnpapa/angularjs-styleguide) such as the [folders-by-feature-structure](https://github.com/johnpapa/angularjs-styleguide#folders-by-feature-structure) and [module](https://github.com/johnpapa/angularjs-styleguide#many-small-self-contained-modules) patterns
-* The convention used for `$scope` variable assignment prevents primitives from being assigned ([this avoids many bugs](http://zcourts.com/2013/05/31/angularjs-if-you-dont-have-a-dot-youre-doing-it-wrong/))
-* Using `tslint` to keep code clean!
-* Comprehensive `.gitignore` and `.jshintrc`
-* Uses notifications for most errors and enables TDD
-* Unlike most other Ioinc/Angular/folders-by-feature seeds, this one also includes test examples
+* The convention used for `$scope` (see `ICoreScope`) variable assignment prevents primitives from being assigned ([this avoids many bugs](http://zcourts.com/2013/05/31/angularjs-if-you-dont-have-a-dot-youre-doing-it-wrong/))
+* Comprehensive `.gitignore` and `.jshintrc` (uses `tslint` to keep code clean!)
+* Uses OSX notifications for most watcher errors (and enables TDD)
+* Unlike most other Ioinc/Angular/folders-by-feature seeds, this one also includes test examples (unit and functional/E2E tests in TypeScript)
 * Everything uses source maps so failing tests and broken code will show you the `.ts` file that is causing it
 * All Font-awesome icons working with no additional configuration!
 
@@ -34,6 +33,16 @@ ionic platform add ios
 Development
 ===========
 
+***Do not enable IDE compilation of TypeScript as the file watcher in this project will handle this for you and keep the conventions in place.***
+
+To enable automatic SASS compilation, TypeScript compilation, and test running:
+
+```bash
+npm run watch
+```
+
+If you'd rather be more granular...
+
 To compile SASS:
 
 ```bash
@@ -46,18 +55,10 @@ To compile TypeScript files:
 npm run ts
 ```
 
-To enable automatic SASS compilation, TypeScript compilation, and test running:
-
-```bash
-npm run watch
-```
-
-*Do not enable IDE compilation of TypeScript as the file watcher in this project will handle this for you.*
-
 Testing
 -------
 
-To run unit tests (requires the `ts` job to have been run successfully):
+To run unit tests (will run all dependency tasks):
 
 ```bash
 npm run test
@@ -68,15 +69,15 @@ To run end-to-end (E2E) tests, do these two steps in order:
 1. `npm run server` (starts a web server; run this just once in its own tab)
 2. `npm run e2e` (runs the tests in your browser; run it repeatedly)
 
-End-to-end tests tests are located at `src/**/*.e2e.ts`
+End-to-end tests tests are located at `src/**/*.e2e.ts` in each folder they are related to.
 
 Adding dependencies
 -----------------------
 
-* For TSDs (to have TypeScript detection), use `tsd install <package> --save`
+* For [TSDs](http://definitelytyped.org/tsd/) (to have TypeScript detection), use `tsd install <package> --save`
 * For bower (things used in the browser), use `bower install <package> --save`
 * For npm (things used to build stuff), use `npm install <package> --save-dev`
-* For 3rd party, non-TSD definitions, placed them in `lib/definitions/`
+* For 3rd party, non-TSD definitions, placed them in `lib/definitions/`, and don't touch `lib/definitions/e2e-definitions/` unless you want something added to the E2E test build
 
 Runing the application
 ======================
@@ -108,5 +109,4 @@ Notes
 * Don't mess with files in `www`! For example, `test/e2e.js` - compiled end to end tests will end up here (from `src/**/*.e2e.ts`); `test/unit.js` - compiled unit tests will end up here (from `src/**/*.spec.ts`)
 * The strange testing convention in the E2E files is the Page [Object pattern](https://code.google.com/p/selenium/wiki/PageObjects). Basically you hide DOM-level details from tests.
 * Note that since E2E code doesn't technically touch the main code base directly, there's no need to modularize it
-
 
