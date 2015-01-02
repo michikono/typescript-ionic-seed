@@ -60,7 +60,9 @@
     "precompile-typescript": "npm run update-webdriver",
     "compile-typescript": "gulp tsE2E",
     "pree2e": "npm run compile-typescript",
-    "e2e": "protractor e2e.conf.js"
+    "e2e": "protractor e2e.conf.js",
+    "presuite": "npm run tests",
+    "suite": "npm run e2e"
   },
   "private": true,
   "dependencies": {
