@@ -26,6 +26,7 @@ npm install tsd@next -g
 npm install -g gulp
 npm install -g ionic
 npm install -g bower
+npm install -g protractor
 npm install
 bower install
 tsd reinstall --overwrite
@@ -61,6 +62,13 @@ gulp watch
 ```
 
 *Do not enable IDE compilation of TypeScript as the gulp watcher will handle this for you.*
+
+Testing
+-------
+
+`webdriver-manager start`
+
+
 
 Adding dependencies
 -----------------------

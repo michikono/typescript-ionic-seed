@@ -11,7 +11,7 @@ www/fonts/*
 www/js/*
 www/lib/*
 tsd/*
-
+test_out/*
 
 # Created by https://www.gitignore.io
 
