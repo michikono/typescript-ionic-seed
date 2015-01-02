@@ -2,7 +2,7 @@
   "name": "typescript-ionic-seed",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "To help people get started on TypeScript + Angular + Ionic",
+  "description": "Get started on TypeScript + Angular + Ionic + TDD",
   "devDependencies": {
     "bower": "^1.3.3",
     "event-stream": "^3.2.1",
