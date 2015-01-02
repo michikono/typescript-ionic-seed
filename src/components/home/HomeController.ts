@@ -1,12 +1,11 @@
 /// <reference path='../../definitions.d.ts' />
-/// <reference path='IHomeScope.ts' />
 
-module typeScriptIonicApp {
+module typeScriptIonicApp.components.home {
 
     // this export lets us directly initialize this during tests
-    export class HomeCtrl {
+    export class HomeController {
         constructor(public $scope:IHomeScope, private $state:ng.ui.IStateService, private $ionicHistory) {
-            console.log('home loaded');
+            console.log('home loaded!');
             // 'vm' stands for 'view model'. An additional benefit to this is to prevent primatives getting
             // assigned to the scope directly
             $scope.vm = this;
@@ -27,7 +26,7 @@ module typeScriptIonicApp {
             views: {
                 menuContent: {
                     templateUrl: 'components/home/home.html',
-                    controller: 'HomeCtrl'
+                    controller: 'HomeController'
                 }
             }
         };
@@ -35,7 +34,7 @@ module typeScriptIonicApp {
         $stateProvider.state('app.home', state);
     }
 
-    export var app:ng.IModule = angular.module('typeScriptIonicApp.home', ['ionic']);
-    app.controller('HomeCtrl', HomeCtrl);
+    export var app:ng.IModule = angular.module('typeScriptIonicApp.components.home', ['ionic']);
+    app.controller('HomeController', HomeController);
     app.config(setRouteState);
 }

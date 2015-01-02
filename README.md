@@ -3,18 +3,17 @@ Overview
 
 This is a seed for an Ionic/TypeScript setup. Features of this project:
 
-* Unlike most other seeds, this one also includes test examples files
-* Everything uses source maps so failing tests and broken code will show you the .ts file that is causing it
+* All Angular/Ionic code using TypeScript
 * Ready to go for use in Ionic
 * Gulp instead of Grunt (some may debate this choice)
-* Examples of how to export Angular classes in TypeScript
-* Uses hand-written TypeScript `.d.ts` files (in `src/definitions`) as well as `tsd` files
+* Examples hand-written TypeScript `.d.ts` files (in `src/definitions`) as well as `tsd` files
 * Angular portion of project is using the feature pattern where files are organized by feature instead of type (this is considered a best-practice)
 * The convention used for $scope variable assignment prevents primitives from being assigned (this avoids many bugs; see http://zcourts.com/2013/05/31/angularjs-if-you-dont-have-a-dot-youre-doing-it-wrong/)
-* JSHint ready to go
-* A comprehensive `.gitignore`
-* Uses `gulp-notify` for errors
-
+* `tslint` installed and runs on each TypeScript compilation!
+* Comprehensive `.gitignore` and `.jshintrc`
+* Uses notifications for most errors
+* Unlike most other seeds, this one also includes test examples files
+* Everything uses source maps so failing tests and broken code will show you the `.ts` file that is causing it
 
 Setup
 =====
@@ -90,3 +89,18 @@ iPhone
 ionic build ios
 ionic emulate ios
 ```
+
+Distribution
+============
+
+TODO
+
+
+Notes
+=====
+
+* The `module` syntax is used to create actual JavaScript modules -- code inside a module is scoped to it. Each feature folder uses its own module name and the shared scope is used in the unit tests to access the declarations without requiring verbose prefixes.
+* The `angular.module` syntax is an Angular thing for componentizing code. To avoid confusion, wherever possible, the two types of modules should be the same in a file.
+* You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat)
+* When creating interfaces, you can declare them by prefixing the `module` declaration with `declare` (http://stackoverflow.com/questions/17635033/error-ts1046-declare-modifier-required-for-top-level-element).
+* The gulp task maintains `src/generated.definitions.d.ts` for you. Thanks to this, no further work is necessary when bootstrapping tests.

@@ -7,24 +7,74 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var notify = require("gulp-notify");
+var sourcemaps = require('gulp-sourcemaps');
 
+var testFilePattern = 'src/**/*.spec.ts';
 var paths = {
   sass: ['./src/scss/**/*.scss', './src/scss/*.scss'],
-  ts: ['./src/*.ts', './src/**/*.ts', './www/lib/typings/**/*.d.ts', '*.d.ts'],
+  ts: ['./src/*.ts', './src/**/*.ts'],
+  tsds: ['*.d.ts', './tsd/**/*.d.ts', './src/*.d.ts', './src/**/*.d.ts', './lib/definitions/**/*.d.ts'],
   html: ['./src/**/*.html'],
+  lib: ['./bower_components/ionic/js/ionic.bundle.js'],
+  fonts: ['./bower_components/ionic/fonts/*'],
   test: ['./www/test/**/*.js']
 };
 
-gulp.task('default', ['clean', 'sass', 'ts', 'tslint', 'html']);
+gulp.task('default', ['ts', 'tsTest', 'html', 'lib', 'sass', 'fonts', 'tslint']);
 
+/*
+ * this task re-builds the project before watching it
+ */
+gulp.task('watch', function () {
+  gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.ts.concat(paths.tsds), ['ts', 'tsTest', 'tslint']);
+  gulp.watch(paths.html, ['html']);
+  gulp.watch(paths.fonts, ['fonts']);
+  gulp.watch(paths.lib, ['lib']);
+  gulp.watch(paths.test, ['tdd']);
+});
+
+/*
+ * purges all generated files
+ */
 var clean = require('gulp-clean');
-gulp.task('clean', function () {
-  return gulp.src(['www/css', 'www/js', 'www/test'], {read: false})
+gulp.task('clean', ['cleanCss', 'cleanHtml', 'cleanFonts']);
+gulp.task('cleanCss', function () {
+  return gulp.src(['./www/css'], {read: false})
+    .pipe(clean());
+});
+gulp.task('cleanFonts', function () {
+  return gulp.src(['./www/fonts'], {read: false})
+    .pipe(clean());
+});
+gulp.task('cleanHtml', function () {
+  return gulp.src(['./www/js/template.js'], {read: false})
     .pipe(clean());
 });
 
-var sourcemaps = require('gulp-sourcemaps');
-gulp.task('sass', function (done) {
+/*
+ * copies important external dependencies into the working folder
+ */
+gulp.task('lib', function () {
+  return gulp.src(paths.lib)
+    .pipe(sourcemaps.init({debug: true}))
+    .pipe(concat('lib.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./www/js'));
+});
+
+/*
+ * copies fonts from external dependencies
+ */
+gulp.task('fonts', ['cleanFonts'], function () {
+  return gulp.src(paths.fonts)
+    .pipe(gulp.dest('./www/fonts'));
+});
+
+/*
+ * compiles CSS from SCSS
+ */
+gulp.task('sass', ['cleanCss'], function (done) {
   gulp.src(paths.sass)
     .pipe(sourcemaps.init({debug: true}))
     .pipe(sass({sync: true}))
@@ -38,45 +88,54 @@ gulp.task('sass', function (done) {
     .on('end', done);
 });
 
+/*
+ * Compiles TypeScript
+ */
 var ts = require('gulp-typescript');
 var eventStream = require('event-stream');
+var tsProject = ts.createProject({
+  noImplicitAny: false,
+  removeComments: true,
+  module: 'commonjs',
+  target: 'ES5',
+  sortOutput: true,
+  declarationFiles: false,
+  noExternalResolve: true
+});
 gulp.task('ts', function () {
-  var tsResult = gulp.src(['./src/*.ts', './src/**/*.ts', './www/lib/typings/**/*.d.ts', '*.d.ts', '!src/**/*.spec.ts'])
+  var tsResult = gulp.src(paths.ts.concat(paths.tsds, ['!' + testFilePattern]))
     .pipe(sourcemaps.init({debug: true}))
-    .pipe(ts({
-      // set this to true if your project is strict with types
-      noImplicitAny: false,
-      removeComments: true,
-      module: 'commonjs',
-      target: 'ES5',
-      sortOutput: true,
-      declarationFiles: true,
-      noExternalResolve: true
-    }));
-
-  var tsTestResult = gulp.src(paths.ts)
-    .pipe(sourcemaps.init({debug: true}))
-    .pipe(ts({
-      // set this to true if your project is strict with types
-      noImplicitAny: false,
-      removeComments: true,
-      module: 'commonjs',
-      target: 'ES5',
-      sortOutput: true,
-      declarationFiles: true,
-      noExternalResolve: true
-    }));
-
-  return eventStream.merge(
-    tsResult.js.pipe(concat('app.js')).pipe(sourcemaps.write()).pipe(gulp.dest('./www/js')),
-    tsTestResult.js.pipe(concat('tests.js')).pipe(sourcemaps.write()).pipe(gulp.dest('./www/test'))
-  );
+    .pipe(ts(tsProject))
+    .pipe(concat('app.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./www/js'))
 });
 
+var tsTestProject = ts.createProject({
+  noImplicitAny: false,
+  removeComments: false,
+  module: 'commonjs',
+  target: 'ES5',
+  sortOutput: true,
+  declarationFiles: false,
+  noExternalResolve: true
+});
+gulp.task('tsTest', ['ts'], function () {
+  return gulp.src(paths.tsds.concat(paths.ts))
+    .pipe(sourcemaps.init({debug: true}))
+    .pipe(ts(tsTestProject))
+    .pipe(concat('tests.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./www/test'))
+});
+
+/*
+ * runs TypeScript linter
+ */
 var plumber = require('gulp-plumber');
 var tslint = require('gulp-tslint');
-gulp.task('tslint', function () {
-  gulp.src(['src/**/*.ts', '!src/definitions/**/*.ts'])
+gulp.task('tslint', ['tsTest'], function () {
+  gulp.src(['src/**/*.ts', '!src/**/*.d.ts'])
     .pipe(tslint())
     .pipe(notify(function (file) {
       if (file.tslint.failureCount === 0) {
@@ -92,9 +151,12 @@ gulp.task('tslint', function () {
     }))
 });
 
+/*
+ * Stringifies all templates
+ */
 var templateCache = require('gulp-angular-templatecache');
 var htmlmin = require('gulp-htmlmin');
-gulp.task('html', function () {
+gulp.task('html', ['cleanHtml'], function () {
   return gulp.src(paths.html)
     .pipe(sourcemaps.init({debug: true}))
     .pipe(htmlmin({collapseWhitespace: true}))
@@ -104,8 +166,11 @@ gulp.task('html', function () {
     .pipe(gulp.dest('./www/js'));
 });
 
+/*
+ * runs tests
+ */
 var karma = require('gulp-karma');
-gulp.task('test', function (done) {
+gulp.task('test', ['tsTest'], function (done) {
   // Be sure to return the stream
   // NOTE: Using the fake './foobar' so as to run the files
   // listed in karma.conf.js INSTEAD of what was passed to
@@ -117,7 +182,10 @@ gulp.task('test', function (done) {
     }));
 });
 
-gulp.task('tdd', function (done) {
+/*
+ * Runs autotest watcher
+ */
+gulp.task('tdd', ['tsTest'], function (done) {
   // Be sure to return the stream
   // NOTE: Using the fake './foobar' so as to run the files
   // listed in karma.conf.js INSTEAD of what was passed to
@@ -127,15 +195,6 @@ gulp.task('tdd', function (done) {
       configFile: 'karma.conf.js',
       action: 'watch'
     }));
-});
-
-gulp.task('watch', ['clean', 'watch-tasks']);
-
-gulp.task('watch-tasks', function () {
-  gulp.watch(paths.sass, ['sass']);
-  gulp.watch(paths.ts, ['ts', 'tslint']);
-  gulp.watch(paths.html, ['html']);
-  gulp.watch(paths.test, ['tdd']);
 });
 
 gulp.task('install', ['git-check'], function () {

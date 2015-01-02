@@ -15,8 +15,8 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'www/lib/ionic/js/ionic.bundle.js',
-      'www/lib/angular-mocks/angular-mocks.js',
+      'bower_components/ionic/js/ionic.bundle.js',
+      'bower_components/angular-mocks/angular-mocks.js',
       'www/test/**/*.js'
     ],
 
@@ -39,8 +39,8 @@ module.exports = function (config) {
 
     // https://www.npmjs.com/package/karma-notify-reporter
     notifyReporter: {
-      reportEachFailure: false, // Default: false, Will notify on every failed sepc
-      reportSuccess: true, // Default: true, Will notify when a suite was successful
+      reportEachFailure: true, // Default: false, Will notify on every failed sepc
+      reportSuccess: false, // Default: true, Will notify when a suite was successful
     },
 
     // web server port

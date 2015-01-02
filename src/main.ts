@@ -1,4 +1,4 @@
-/// <reference path='definitions.d.ts' />
+/// <reference path='./definitions.d.ts' />
 
 // this hide message errors from compiler
 interface Window {
@@ -11,8 +11,8 @@ module typeScriptIonicApp {
     export var app:ng.IModule = angular.module('typeScriptIonicApp', [
         'ionic',
         'templates',
-        'typeScriptIonicApp.home',
-        'typeScriptIonicApp.login'
+        'typeScriptIonicApp.components.home',
+        'typeScriptIonicApp.components.login'
     ]);
 
     app.run(function ($ionicPlatform) {
@@ -35,7 +35,7 @@ module typeScriptIonicApp {
             url: '/app',
             abstract: true,
             templateUrl: 'layout/menu/menu.html',
-            controller: 'AppCtrl'
+            controller: 'AppController'
         });
 
         // if none of the above states are matched, use this as the fallback

@@ -1,12 +1,6 @@
+/// <reference path="../definitions.d.ts" />
 module typeScriptIonicApp {
-
-    interface IAppScope extends ng.IScope {
-        vm: {
-
-        }
-    }
-
-    class AppCtrl {
+    class AppController {
         constructor(private $scope:IAppScope) {
             console.log('app loaded');
             // 'vm' stands for 'view model'. An additional benefit to this is to prevent primatives getting
@@ -16,5 +10,5 @@ module typeScriptIonicApp {
     }
 
     export var app:ng.IModule = angular.module('typeScriptIonicApp');
-    app.controller('AppCtrl', AppCtrl);
+    app.controller('AppController', AppController);
 }
