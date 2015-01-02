@@ -6,14 +6,14 @@ This is a seed for an Ionic/TypeScript setup. Features of this project:
 * All Angular/Ionic code using TypeScript
 * Ready to go for use in Ionic
 * Gulp instead of Grunt (some may debate this choice)
-* Examples hand-written TypeScript `.d.ts` files (in `src/definitions`) as well as `tsd` files
-* Angular portion of project is using the feature pattern where files are organized by feature instead of type (this is considered a best-practice)
-* The convention used for $scope variable assignment prevents primitives from being assigned (this avoids many bugs; see http://zcourts.com/2013/05/31/angularjs-if-you-dont-have-a-dot-youre-doing-it-wrong/)
-* `tslint` installed and runs on each TypeScript compilation!
+* The codebase uses many best practices found [here](https://github.com/johnpapa/angularjs-styleguide) such as the [folders-by-feature-structure](https://github.com/johnpapa/angularjs-styleguide#folders-by-feature-structure) and [module](https://github.com/johnpapa/angularjs-styleguide#many-small-self-contained-modules) patterns
+* The convention used for `$scope` variable assignment prevents primitives from being assigned ([this avoids many bugs](http://zcourts.com/2013/05/31/angularjs-if-you-dont-have-a-dot-youre-doing-it-wrong/))
+* Using `tslint` to keep code clean!
 * Comprehensive `.gitignore` and `.jshintrc`
-* Uses notifications for most errors
-* Unlike most other seeds, this one also includes test examples files
+* Uses notifications for most errors and enables TDD
+* Unlike most other Ioinc/Angular/folders-by-feature seeds, this one also includes test examples
 * Everything uses source maps so failing tests and broken code will show you the `.ts` file that is causing it
+* All Font-awesome icons working with no additional configuration!
 
 Setup
 =====
@@ -89,18 +89,12 @@ ionic build ios
 ionic emulate ios
 ```
 
-Distribution
-============
-
-TODO
-
 
 Notes
 =====
 
-* The codebase uses many best practices found [here](https://github.com/johnpapa/angularjs-styleguide) such as the [folders-by-feature-structure](https://github.com/johnpapa/angularjs-styleguide#folders-by-feature-structure) and [module](https://github.com/johnpapa/angularjs-styleguide#many-small-self-contained-modules) patterns
 * The `module` syntax is used to create actual TypeScript modules -- code inside a module is scoped to it. Each feature folder uses its own module name and the shared scope is used in the unit tests to access the declarations without requiring verbose prefixes.
 * The `angular.module` syntax is an Angular thing for componentizing code. To avoid confusion, wherever possible, the two types of module references should be the same in a file/feature.
 * You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat)
 * When creating interfaces, you can declare them by prefixing the `module` declaration with `declare` (http://stackoverflow.com/questions/17635033/error-ts1046-declare-modifier-required-for-top-level-element).
-* The gulp task maintains `src/generated.definitions.d.ts` for you. Thanks to this, no further work is necessary when bootstrapping tests.
+* Place images, fonts, scss, etc. in `assets/`; always assume the `www/` folder is volatile!

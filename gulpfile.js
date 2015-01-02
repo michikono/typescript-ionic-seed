@@ -13,16 +13,17 @@ var sourcemaps = require('gulp-sourcemaps');
 
 var testFilePattern = 'src/**/*.spec.ts';
 var paths = {
-  sass: ['./src/scss/**/*.scss', './src/scss/*.scss'],
+  sass: ['./assets/scss/**/*.scss', './assets/scss/*.scss'],
   ts: ['./src/*.ts', './src/**/*.ts'],
   tsds: ['*.d.ts', './tsd/**/*.d.ts', './src/*.d.ts', './src/**/*.d.ts', './lib/definitions/**/*.d.ts'],
   html: ['./src/**/*.html'],
   lib: ['./bower_components/ionic/js/ionic.bundle.js'],
-  fonts: ['./bower_components/ionic/fonts/*'],
+  fonts: ['./bower_components/ionic/fonts/*', './assets/fonts/*'],
+  images: ['./assets/images/*'],
   test: ['./www/test/**/*.js']
 };
 
-gulp.task('default', ['ts', 'tsTest', 'html', 'lib', 'sass', 'fonts', 'tslint']);
+gulp.task('default', ['ts', 'tsTest', 'html', 'lib', 'sass', 'fonts', 'images', 'tslint']);
 
 /*
  * this task re-builds the project before watching it
@@ -49,6 +50,7 @@ gulp.task('watch-tasks', function () {
   gulp.watch(paths.ts.concat(paths.tsds), ['ts', 'tsTest', 'tslint']);
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.fonts, ['fonts']);
+  gulp.watch(paths.images, ['images']);
   gulp.watch(paths.lib, ['lib']);
   gulp.watch(paths.test, ['tdd']);
 })
@@ -57,13 +59,17 @@ gulp.task('watch-tasks', function () {
  * purges all generated files
  */
 var clean = require('gulp-clean');
-gulp.task('clean', ['cleanCss', 'cleanHtml', 'cleanFonts']);
+gulp.task('clean', ['cleanCss', 'cleanHtml', 'cleanFonts', 'cleanImages']);
 gulp.task('cleanCss', function () {
   return gulp.src(['./www/css'], {read: false})
     .pipe(clean());
 });
 gulp.task('cleanFonts', function () {
   return gulp.src(['./www/fonts'], {read: false})
+    .pipe(clean());
+});
+gulp.task('cleanImages', function () {
+  return gulp.src(['./www/images'], {read: false})
     .pipe(clean());
 });
 gulp.task('cleanHtml', function () {
@@ -88,6 +94,14 @@ gulp.task('lib', function () {
 gulp.task('fonts', ['cleanFonts'], function () {
   return gulp.src(paths.fonts)
     .pipe(gulp.dest('./www/fonts'));
+});
+
+/*
+ * copies images from external dependencies
+ */
+gulp.task('images', ['cleanImages'], function () {
+  return gulp.src(paths.images)
+    .pipe(gulp.dest('./www/images'));
 });
 
 /*
