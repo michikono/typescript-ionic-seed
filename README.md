@@ -14,6 +14,7 @@ This is a seed for a TypeScript/Ionic project. What makes this seed _awesome_:
 * Everything uses source maps so failing tests and broken code will show you the `.ts` file that is causing it
 * All Font-awesome icons working with no additional configuration!
 * A working Travis CI integration ([check it out!](https://travis-ci.org/michikono/typescript-ionic-seed))
+* Minifies all HTML, CSS, and JS (except tests)
 
 Setup
 =====
@@ -79,7 +80,6 @@ Adding dependencies
 * For bower (things used in the browser), use `bower install <package> --save`
 * For npm (things used to build stuff), use `npm install <package> --save-dev`
 * For 3rd party, non-TSD definitions, placed them in `lib/definitions/`, and don't touch `lib/definitions/e2e-definitions/` unless you want something added to the E2E test build
-* Minifies all HTML, CSS, and JS (except tests)
 
 Runing the application
 ======================

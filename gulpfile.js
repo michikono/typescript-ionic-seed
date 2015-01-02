@@ -25,7 +25,7 @@ var paths = {
   test: ['./www/test/unit.js']
 };
 
-gulp.task('default', ['html', 'lib', 'sass', 'fonts', 'images', 'index', 'tsE2E']);
+gulp.task('default', ['html', 'lib', 'sass', 'fonts', 'images', 'index', 'ts', 'tsTest', 'tsE2E']);
 
 /*
  * this task re-builds the project before watching it
