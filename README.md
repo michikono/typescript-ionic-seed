@@ -29,8 +29,8 @@ npm install -g bower
 npm install
 bower install
 tsd reinstall --overwrite
-ionic platform add ios
 gulp
+ionic platform add ios
 ```
 
 Development
@@ -62,14 +62,13 @@ gulp watch
 
 *Do not enable IDE compilation of TypeScript as the gulp watcher will handle this for you.*
 
-Adding new dependencies
+Adding dependencies
 -----------------------
 
 * For TSDs (to have TypeScript detection), use `tsd install <package> --save`
 * For bower (things used in the browser), use `bower install <package> --save`
 * For npm (things used to build stuff), use `npm install <package> --save-dev`
-
-
+* For 3rd party, non-TSD definitions, placed them in `lib/definitions/`
 
 Runing the application
 ======================
@@ -99,8 +98,9 @@ TODO
 Notes
 =====
 
-* The `module` syntax is used to create actual JavaScript modules -- code inside a module is scoped to it. Each feature folder uses its own module name and the shared scope is used in the unit tests to access the declarations without requiring verbose prefixes.
-* The `angular.module` syntax is an Angular thing for componentizing code. To avoid confusion, wherever possible, the two types of modules should be the same in a file.
+* The codebase uses many best practices found [here](https://github.com/johnpapa/angularjs-styleguide) such as the [folders-by-feature-structure](https://github.com/johnpapa/angularjs-styleguide#folders-by-feature-structure) and [module](https://github.com/johnpapa/angularjs-styleguide#many-small-self-contained-modules) patterns
+* The `module` syntax is used to create actual TypeScript modules -- code inside a module is scoped to it. Each feature folder uses its own module name and the shared scope is used in the unit tests to access the declarations without requiring verbose prefixes.
+* The `angular.module` syntax is an Angular thing for componentizing code. To avoid confusion, wherever possible, the two types of module references should be the same in a file/feature.
 * You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat)
 * When creating interfaces, you can declare them by prefixing the `module` declaration with `declare` (http://stackoverflow.com/questions/17635033/error-ts1046-declare-modifier-required-for-top-level-element).
 * The gulp task maintains `src/generated.definitions.d.ts` for you. Thanks to this, no further work is necessary when bootstrapping tests.
