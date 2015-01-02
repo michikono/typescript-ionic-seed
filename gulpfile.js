@@ -34,7 +34,6 @@ gulp.task('watch', function () {
   var p;
 
   gulp.watch('gulpfile.js', spawnChildren);
-  spawnChildren();
 
   function spawnChildren(e) {
     // kill previous spawned process
@@ -48,7 +47,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('watch-tasks', function () {
-  gulp.watch(paths.e2e, ['tsE2E']);
+  gulp.watch(paths.e2e, ['tsE2E', 'tslint']);
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.ts.concat(paths.tsds), ['ts', 'tsTest', 'tslint']);
   gulp.watch(paths.html, ['html']);
