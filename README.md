@@ -108,6 +108,7 @@ Notes
 * Always assume the `www/` folder is scratch space -- including `index.html`!
 * Place images, fonts, scss, etc. in `assets/`
 * Don't mess with files in `www`! For example, `test/e2e.js` - compiled end to end tests will end up here (from `src/**/*.e2e.ts`); `test/unit.js` - compiled unit tests will end up here (from `src/**/*.spec.ts`)
-* The strange testing convention in the E2E files is the Page [Object pattern](https://code.google.com/p/selenium/wiki/PageObjects). Basically you hide DOM-level details from tests.
-* Note that since E2E code doesn't technically touch the main code base directly, there's no need to modularize it
+* The strange-looking testing convention in the E2E files is the [Page Object pattern](https://code.google.com/p/selenium/wiki/PageObjects). Basically you hide DOM-level details from tests.
+* Note that since E2E code doesn't technically touch the main code base directly, it doesn't need all the same dependencies (or any) that the rest of the code needs. Modules are entirely optional, but I used them for consistency.
+* Yes, the seed project currently lacks an example Service, but hopefully there's enough here to illustrate how you might write one.
 
