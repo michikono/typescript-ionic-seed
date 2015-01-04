@@ -68,7 +68,7 @@
     "precompile-typescript": "npm run update-webdriver",
     "compile-typescript": "gulp tsE2E",
     "preprotractor": "npm run compile-typescript",
-    "protractor": "protractor protrac tor.conf.js",
+    "protractor": "protractor protractor.conf.js",
     "precucumber": "npm run compile-typescript",
     "cucumber": "cucumber.js -f=pretty",
     "presuite": "npm run tests",
