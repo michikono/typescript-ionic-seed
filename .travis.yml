@@ -15,7 +15,7 @@ before_script:
   - npm run setup
   - npm run travis-server > /dev/null &
   - npm run update-webdriver
-  - npm run web-driver > /dev/null &
+  - npm run cucumber-server > /dev/null &
   - sleep 3 # give server time to start
 
 script:
