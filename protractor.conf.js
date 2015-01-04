@@ -1,4 +1,4 @@
-// protractor configuration file
+// protractor configuration file for jasmine tests
 exports.config = {
   allScriptsTimeout: 11000,
 
@@ -13,8 +13,7 @@ exports.config = {
   baseUrl: 'http://localhost:8000/',
 
   framework: 'jasmine',
-
   jasmineNodeOpts: {
-    defaultTimeoutInterval: 30000
+     defaultTimeoutInterval: 30000
   }
 };

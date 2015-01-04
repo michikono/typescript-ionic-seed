@@ -73,16 +73,17 @@ To run functional tests, try one of the following.
 For Protractor + Jasmine:
 
 1. `npm run server` (start this in its own tab)
-2. `npm run protractor` (runs the tests in your browser; run it repeatedly)
+2. `npm run protractor`
 
 Protractor tests are located at `src/**/*.e2e.ts` in each folder they are related to.
 
 For Protractor + Cucumber:
 
-1. `npm run cucumber-server` (start this in its own tab)
-2. `npm run cucumber` (runs the tests in your browser; run it repeatedly)
+1. `npm run server` (start this in its own tab)
+2. `npm run web-driver` (start this in its own tab too; drives the browser)
+3. `npm run cucumber` (uses protractor to drive)
 
-Cucumber tests are located at `features/*.feature`. The `step_definitions` contains the definition mappings and is roughly organized by type.
+Cucumber tests are located at `features/**/*.feature` -- these were placed outside of the TypeScript definitions for convenience to allow IDEs to better parse the definitions. The `step_definitions` contains the definition mappings and is roughly organized by type.
 
 Adding dependencies
 -----------------------
