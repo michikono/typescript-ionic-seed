@@ -12,17 +12,13 @@ before_script:
   - npm install -g bower
   - npm install -g protractor
   - npm install -g cucumber
-  - npm run setup
   - npm run update-webdriver
   - npm run travis-server > /dev/null &
-  - npm run web-driver > /dev/null &
+  - npm run setup
   - sleep 3 # give server time to start
 
 script:
   - gulp
-  - echo "Running unit tests..."
   - ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
-  - echo "Running functional tests..."
   - protractor protractor.conf.js --browser=firefox
   - protractor cucumber.conf.js --browser=firefox
-#  - cucumber.js -f=pretty
