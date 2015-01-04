@@ -24,4 +24,4 @@ script:
   - ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
   - echo "Running functional tests..."
   - protractor protractor.conf.js --browser=firefox
-  - cucumber.js
+  - cucumber.js -f=pretty
