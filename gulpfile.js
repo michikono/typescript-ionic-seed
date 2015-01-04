@@ -17,12 +17,13 @@ var paths = {
   sass: ['./assets/scss/**/*.scss', './assets/scss/*.scss'],
   ts: ['./src/*.ts', './src/**/*.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts'],
   tsds: ['*.d.ts', './tsd/**/*.d.ts', './src/*.d.ts', './src/**/*.d.ts', './lib/definitions/**/*.d.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts', '!./src/**/*.e2e.ts'],
+  tsSpec: ['./src/**/*.spec.ts'],
   html: ['./src/**/*.html'],
   lib: ['./bower_components/ionic/js/ionic.bundle.js'],
   fonts: ['./bower_components/ionic/fonts/*', './assets/fonts/*'],
   index: ['./assets/index.html'],
   images: ['./assets/images/*'],
-  test: ['./www/test/unit.js']
+  testJs: ['./www/test/unit.js']
 };
 
 gulp.task('default', ['html', 'lib', 'sass', 'fonts', 'images', 'index', 'ts', 'tsTest', 'tsE2E']);
@@ -56,7 +57,7 @@ gulp.task('watch-tasks', function () {
   gulp.watch(paths.images, ['images']);
   gulp.watch(paths.index, ['index']);
   gulp.watch(paths.lib, ['lib']);
-  gulp.watch(paths.test, ['runJustTest']);
+  gulp.watch(paths.testJs, ['runJustTest']);
 })
 
 /*
@@ -172,10 +173,10 @@ var tsTestProject = ts.createProject({
   target: 'ES5',
   sortOutput: true,
   declarationFiles: false,
-  noExternalResolve: true
+  noExternalResolve: false
 });
 gulp.task('tsTest', ['ts'], function () {
-  return gulp.src(paths.tsds.concat(paths.ts))
+  return gulp.src(paths.tsSpec)
     .pipe(sourcemaps.init({debug: true}))
     .pipe(ts(tsTestProject))
     .pipe(concat('unit.js'))
