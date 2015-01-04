@@ -11,11 +11,9 @@ before_script:
   - npm install -g ionic
   - npm install -g bower
   - npm install -g protractor
-  - npm install -g cucumber
   - npm run setup
-  - npm run travis-server > /dev/null &
   - npm run update-webdriver
-  - npm run cucumber-server > /dev/null &
+  - npm run travis-server > /dev/null &
   - sleep 3 # give server time to start
 
 script:
@@ -24,4 +22,3 @@ script:
   - ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
   - echo "Running functional tests..."
   - protractor protractor.conf.js --browser=firefox
-  - cucumber.js -f=pretty
