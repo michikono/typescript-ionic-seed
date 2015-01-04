@@ -1,7 +1,7 @@
 // https://github.com/danibo86/ionic-typescript-definitions
 /// <reference path='../lib/definitions/ionic/ionic.d.ts' />
 
-/// <reference path='../tsd.d.ts' />
+/// <reference path='../tsd/tsd.d.ts' />
 
 /*******
  * INCLUDE ALL YOUR CUSTOM SOURCE FILES HERE

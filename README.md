@@ -10,11 +10,12 @@ This is a seed for a TypeScript/Ionic project. What makes this seed _awesome_:
 * The convention used for `$scope` (see `ICoreScope`) variable assignment prevents primitives from being assigned ([this avoids many bugs](http://zcourts.com/2013/05/31/angularjs-if-you-dont-have-a-dot-youre-doing-it-wrong/))
 * Comprehensive `.gitignore` and `.jshintrc` (uses `tslint` to keep code clean!)
 * Uses OSX notifications for most watcher errors (and enables TDD)
-* Unlike most other Ioinc/Angular/folders-by-feature seeds, this one also includes test examples (unit and functional/E2E tests in TypeScript)
+* Unlike most other Ioinc/Angular/folders-by-feature seeds, this one also includes test examples (unit and functional tests in TypeScript)
 * Everything uses source maps so failing tests and broken code will show you the `.ts` file that is causing it
 * All Font-awesome icons working with no additional configuration!
 * A working Travis CI integration ([check it out!](https://travis-ci.org/michikono/typescript-ionic-seed))
 * Minifies all HTML, CSS, and JS (except tests)
+* Contains test samples for Protractor+Cucumber+Chai and Protractor+Jasmine. [Choose the one you prefer.](http://angular.github.io/protractor/#/frameworks)
 
 Setup
 =====
@@ -28,6 +29,7 @@ npm install -g ionic
 npm install tsd@next -g
 npm install -g bower
 npm install -g protractor
+npm install -g cucumber
 npm run setup
 ionic platform add ios
 ```
@@ -66,17 +68,26 @@ To run unit tests (will run all dependency tasks):
 npm run test
 ```
 
-To run end-to-end (E2E) tests, do these two steps in order:
+To run functional tests, try one of the following.
 
-1. `npm run server` (starts a web server; run this just once in its own tab)
-2. `npm run e2e` (runs the tests in your browser; run it repeatedly)
+For Protractor + Jasmine:
 
-End-to-end tests tests are located at `src/**/*.e2e.ts` in each folder they are related to.
+1. `npm run server` (start this in its own tab)
+2. `npm run protractor` (runs the tests in your browser; run it repeatedly)
+
+Protractor tests are located at `src/**/*.e2e.ts` in each folder they are related to.
+
+For Protractor + Cucumber:
+
+1. `npm run cucumber-server` (start this in its own tab)
+2. `npm run cucumber` (runs the tests in your browser; run it repeatedly)
+
+Cucumber tests are located at `features/*.feature`. The `step_definitions` contains the definition mappings and is roughly organized by type.
 
 Adding dependencies
 -----------------------
 
-* For [TSDs](http://definitelytyped.org/tsd/) (to have TypeScript detection), use `tsd install <package> --save`
+* For [TSDs](http://definitelytyped.org/tsd/) (to have TypeScript detection), use `tsd install <package> --save`. This may break the `.tsd.d.ts` file -- if this happens, just review the generated file paths carefully before proceeding.
 * For bower (things used in the browser), use `bower install <package> --save`
 * For npm (things used to build stuff), use `npm install <package> --save-dev`
 * For 3rd party, non-TSD definitions, placed them in `lib/definitions/`, and don't touch `lib/definitions/e2e-definitions/` unless you want something added to the E2E test build
@@ -104,12 +115,11 @@ Notes
 
 * The `module` syntax is used to create actual TypeScript modules -- code inside a module is scoped to it. Each feature folder uses its own module name and the shared scope is used in the unit tests to access the declarations without requiring verbose prefixes.
 * The `angular.module` syntax is an Angular thing for componentizing code. To avoid confusion, wherever possible, the two types of module references should be the same in a file/feature.
-* You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat); if anything breaks in your `tsd.d.ts` file, [double check the paths didn't get munged](https://github.com/DefinitelyTyped/tsd/issues/112)
+* You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat); if anything breaks in your `tsd/tsd.d.ts` file, [double check the paths didn't get munged](https://github.com/DefinitelyTyped/tsd/issues/112)
 * When creating interfaces in `.d.ts` files, you can declare them by [prefixing the `module` declaration with `declare`](http://stackoverflow.com/questions/17635033/error-ts1046-declare-modifier-required-for-top-level-element).
 * Always assume the `www/` folder is scratch space -- including `index.html`!
 * Place images, fonts, scss, etc. in `assets/`
 * Don't mess with files in `www`! For example, `test/e2e.js` - compiled end to end tests will end up here (from `src/**/*.e2e.ts`); `test/unit.js` - compiled unit tests will end up here (from `src/**/*.spec.ts`)
 * The strange-looking testing convention in the E2E files is the [Page Object pattern](https://code.google.com/p/selenium/wiki/PageObjects). Basically you hide DOM-level details from tests.
 * Note that since E2E code doesn't technically touch the main code base directly, it doesn't need all the same dependencies (or any) that the rest of the code needs. Modules are entirely optional, but I used them for consistency.
-* Yes, the seed project currently lacks an example Service, but hopefully there's enough here to illustrate how you might write one.
 

@@ -5,6 +5,8 @@
   "description": "Get started on TypeScript + Angular + Ionic + TDD",
   "devDependencies": {
     "bower": "^1.3.3",
+    "chai": "^1.10.0",
+    "chai-as-promised": "^4.1.1",
     "event-stream": "^3.2.1",
     "gulp-angular-templatecache": "^1.5.0",
     "gulp-clean": "^0.3.1",
@@ -60,12 +62,16 @@
     "tests": "gulp test",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
+    "precucumber-server": "npm run update-webdriver",
+    "cucumber-server": "webdriver-manager start",
     "precompile-typescript": "npm run update-webdriver",
     "compile-typescript": "gulp tsE2E",
-    "pree2e": "npm run compile-typescript",
-    "e2e": "protractor e2e.conf.js",
+    "preprotractor": "npm run compile-typescript",
+    "protractor": "protractor protrac tor.conf.js",
+    "precucumber": "npm run compile-typescript",
+    "cucumber": "cucumber.js -f=pretty",
     "presuite": "npm run tests",
-    "suite": "npm run e2e"
+    "suite": "npm run cucumber"
   },
   "private": true,
   "dependencies": {

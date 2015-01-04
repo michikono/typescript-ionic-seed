@@ -2,8 +2,8 @@
   "version": "v4",
   "repo": "borisyankov/DefinitelyTyped",
   "ref": "master",
-  "path": "./tsd",
-  "bundle": "tsd.d.ts",
+  "path": "tsd",
+  "bundle": "tsd/tsd.d.ts",
   "installed": {
     "angular-ui/angular-ui-router.d.ts": {
       "commit": "ca32947b75a2b1203779dac7154ffbc232746e4d"
@@ -76,6 +76,12 @@
     },
     "jasmine/jasmine.d.ts": {
       "commit": "ca32947b75a2b1203779dac7154ffbc232746e4d"
+    },
+    "chai-as-promised/chai-as-promised.d.ts": {
+      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+    },
+    "chai/chai.d.ts": {
+      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
     }
   }
 }
