@@ -74,8 +74,5 @@
     "presuite": "npm run tests",
     "suite": "npm run cucumber"
   },
-  "private": true,
-  "dependencies": {
-    "gulp": "^3.8.10"
-  }
+  "private": true
 }
