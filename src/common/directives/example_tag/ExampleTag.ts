@@ -21,7 +21,8 @@ module typeScriptIonicApp.common.directives {
         }
     }
 
-    export var app:ng.IModule = angular.module('typeScriptIonicApp.common.directives', ['templates']);
+    // this module is re-declared per directive
+    export var app:ng.IModule = app || angular.module('typeScriptIonicApp.common.directives', ['templates']);
     app.directive('exampleTag', () => new ExampleTagDirective());
     app.controller('ExampleTagDirectiveController', ExampleTagDirectiveController);
 
