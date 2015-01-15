@@ -44,7 +44,7 @@ module typeScriptIonicApp.components.login {
         $stateProvider.state('app.login', state);
     }
 
-    export var app:ng.IModule = angular.module('typeScriptIonicApp.components.login', ['ionic']);
+    export var app:ng.IModule = app || angular.module('typeScriptIonicApp.components.login', ['ionic']);
     app.controller('LoginController', LoginController);
     app.config(loginConfig);
 }

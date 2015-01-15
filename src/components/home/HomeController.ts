@@ -39,7 +39,7 @@ module typeScriptIonicApp.components.home {
         $stateProvider.state('app.home', state);
     }
 
-    export var app:ng.IModule = angular.module('typeScriptIonicApp.components.home', ['ionic']);
+    export var app:ng.IModule = app || angular.module('typeScriptIonicApp.components.home', ['ionic']);
     app.controller('HomeController', HomeController);
     app.config(setRouteState);
 }
