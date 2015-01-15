@@ -14,4 +14,4 @@
 /// <reference path='./components/login/LoginController.ts' />
 
 /// <reference path='common/ICoreScope.d.ts' />
-/// <reference path='common/directives/example_tag/ExampleTagDirective.ts' />
+/// <reference path='common/directives/example_tag/ExampleTag.ts' />

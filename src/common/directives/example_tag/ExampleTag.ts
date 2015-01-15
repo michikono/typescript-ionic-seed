@@ -4,13 +4,6 @@ module typeScriptIonicApp.common.directives {
         }
     }
 
-    export class ExampleTagDirectiveController {
-        constructor(public $scope:IExampleTagDirectiveScope) {
-            $scope.vm = this;
-            console.log('controller constructor ran');
-        }
-    }
-
     export class ExampleTagDirective implements ng.IDirective {
         public restrict = 'E';
         public templateUrl = 'common/directives/example_tag/index.html';
@@ -18,6 +11,13 @@ module typeScriptIonicApp.common.directives {
         public scope = {};
 
         constructor() {
+        }
+    }
+
+    export class ExampleTagDirectiveController {
+        constructor(public $scope:IExampleTagDirectiveScope) {
+            $scope.vm = this;
+            console.log('controller constructor ran');
         }
     }
 
