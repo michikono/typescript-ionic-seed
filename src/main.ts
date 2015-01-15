@@ -11,6 +11,7 @@ module typeScriptIonicApp {
     export var app:ng.IModule = angular.module('typeScriptIonicApp', [
         'ionic',
         'templates',
+        'typeScriptIonicApp.common.directives',
         'typeScriptIonicApp.components.home',
         'typeScriptIonicApp.components.login'
     ]);

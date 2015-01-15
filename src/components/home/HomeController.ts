@@ -1,6 +1,11 @@
 /// <reference path='../../definitions.d.ts' />
 
 module typeScriptIonicApp.components.home {
+    export interface IHomeScope extends typeScriptIonicApp.common.ICoreScope {
+        vm: {
+            doLogout: () => void
+        }
+    }
 
     // this export lets us directly initialize this during tests
     export class HomeController {

@@ -1,10 +1,15 @@
 /// <reference path='../../definitions.d.ts' />
 
 module typeScriptIonicApp.components.login {
+    export interface ILoginScope extends typeScriptIonicApp.common.ICoreScope {
+        vm: {
+            doLogin: () => void;
+            username: string;
+            password: string;
+        }
+    }
 
-    // this export lets us directly initialize this during tests
     export class LoginController {
-
         public username:string;
         public password:string;
 
