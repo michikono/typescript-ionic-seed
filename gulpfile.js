@@ -92,7 +92,9 @@ gulp.task('cleanIndex', function () {
 var mainBowerFiles = require('main-bower-files');
 gulp.task('lib', function () {
   return gulp.src(['bower_components/ionic/js/ionic.bundle.js'].concat(paths.lib, mainBowerFiles(), '!**/*.css'))
+    .pipe(sourcemaps.init({debug: true}))
     .pipe(concat('lib.js'))
+    .pipe(sourcemaps.write('maps'))
     .pipe(gulp.dest('www/js'));
 });
 
