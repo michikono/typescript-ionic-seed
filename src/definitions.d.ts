@@ -7,6 +7,8 @@
  * INCLUDE ALL YOUR CUSTOM SOURCE FILES HERE
  *  Failure to include interfaces won't cause problems in some IDEs,
  *  but may in others!
+ *
+ *  Note: The order listed here is the order the files are included.
  *******/
 
 /// <reference path='main.ts' />
