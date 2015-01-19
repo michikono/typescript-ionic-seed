@@ -15,11 +15,11 @@ var testFilePattern = 'src/**/*.spec.ts';
 var paths = {
   e2e: ['src/**/*.e2e.ts', './lib/definitions/e2e-definitions/**/*.d.ts'],
   sass: ['./assets/scss/**/*.scss', './assets/scss/*.scss'],
-  ts: ['./src/*.ts', './src/**/*.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts'],
+  ts: ['./src/*.ts', './src/**/*.ts', './lib/**/*.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts'],
   tsds: ['*.d.ts', './tsd/**/*.d.ts', './src/*.d.ts', './src/**/*.d.ts', './lib/definitions/**/*.d.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts', '!./src/**/*.e2e.ts'],
   tsSpec: ['./src/**/*.spec.ts'],
   html: ['./src/**/*.html'],
-  lib: ['./bower_components/ionic/js/ionic.bundle.js'],
+  lib: ['./lib/**/*.js'],
   fonts: ['./bower_components/ionic/fonts/*', './assets/fonts/*'],
   index: ['./assets/index.html'],
   images: ['./assets/images/*'],
@@ -89,11 +89,10 @@ gulp.task('cleanIndex', function () {
 /*
  * copies important external dependencies into the working folder
  */
+var mainBowerFiles = require('main-bower-files');
 gulp.task('lib', function () {
-  return gulp.src(paths.lib)
-    .pipe(sourcemaps.init({debug: true}))
+  return gulp.src(paths.lib.concat('./bower_components/ionic/js/ionic.bundle.js', mainBowerFiles(), '!**/*.css'))
     .pipe(concat('lib.js'))
-    .pipe(sourcemaps.write())
     .pipe(gulp.dest('./www/js'));
 });
 
