@@ -7,10 +7,10 @@ interface Window {
 }
 
 module typeScriptIonicApp {
-
     export var app:ng.IModule = angular.module('typeScriptIonicApp', [
         'ionic',
         'templates',
+        'typeScriptIonicApp.common.services',
         'typeScriptIonicApp.common.directives',
         'typeScriptIonicApp.components.home',
         'typeScriptIonicApp.components.login'
@@ -38,7 +38,6 @@ module typeScriptIonicApp {
             templateUrl: 'layout/menu/menu.html',
             controller: 'AppController'
         });
-
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/home');
     });
