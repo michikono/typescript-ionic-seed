@@ -10,8 +10,12 @@ module typeScriptIonicApp.components.home {
             return this;
         }
 
-        isRendered():Boolean {
-            return element(by.cssContainingText('h1', 'Home')).isPresent();
+        isRendered() {
+            return protractor.promise.all([
+                element(by.cssContainingText('h1', 'Home')).isPresent(),
+                element(by.cssContainingText('p', '[example-tag] directive')).isPresent(),
+                element(by.cssContainingText('p', 'LoremIpsum')).isPresent()
+            ]);
         }
 
         getCorrectUrl():string {
@@ -32,7 +36,7 @@ module typeScriptIonicApp.components.home {
         });
 
         it('should render the correct contents', function () {
-            expect(feature.isRendered()).toBe(true);
+            expect(feature.isRendered()).toEqual([true, true, true]);
         });
 
         it('should let me log out via the link', function () {

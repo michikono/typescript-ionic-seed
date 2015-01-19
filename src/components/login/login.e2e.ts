@@ -20,19 +20,19 @@ module typeScriptIonicApp.components.login {
             return this;
         }
 
-        isRendered():Boolean {
+        isRendered() {
             return element(by.cssContainingText('h1', 'Login')).isPresent();
         }
 
-        getUsername():Boolean {
+        getUsername() {
             return this.usernameInput.getAttribute('value');
         }
 
-        getPassword():Boolean {
+        getPassword() {
             return this.passwordInput.getAttribute('value');
         }
 
-        getCorrectUrl():string {
+        getCorrectUrl() {
             return '/app/login';
         }
     }
@@ -63,7 +63,7 @@ module typeScriptIonicApp.components.login {
             expect(feature.getUsername()).toBe('defaultJulie');
             expect(feature.getPassword()).toBe('myPassword');
             feature.submitForm();
-            expect((new typeScriptIonicApp.components.home.HomeFeature()).isRendered()).toBe(true);
+            expect((new typeScriptIonicApp.components.home.HomeFeature()).isRendered()).toEqual([true, true, true]);
         });
     });
 }

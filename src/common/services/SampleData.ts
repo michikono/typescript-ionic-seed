@@ -2,14 +2,22 @@
 
 module typeScriptIonicApp.common.services {
 
-    export class SampleData {
+    export interface ISampleData {
+        getData: () => string;
+    }
+
+    export class SampleData implements ISampleData {
+        static $inject = ['$log'];
+
+        constructor(private $log:ng.ILogService) {
+        }
+
         getData():string {
-            return 'mySampleData';
+            this.$log.log('getData() called');
+            return 'LoremIpsum';
         }
     }
 
     export var app:ng.IModule = app || angular.module('typeScriptIonicApp.common.services', ['ionic']);
-    app.service('SampleDataService', () => {
-        return new SampleData();
-    });
+    app.service('SampleDataService', SampleData);
 }

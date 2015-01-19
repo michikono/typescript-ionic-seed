@@ -3,18 +3,21 @@
 module typeScriptIonicApp.components.home {
     export interface IHomeScope extends typeScriptIonicApp.common.ICoreScope {
         vm: {
-            doLogout: () => void
+            doLogout: () => void;
+            data: string;
         }
     }
 
     // this export lets us directly initialize this during tests
     export class HomeController {
+        public data:string;
+
         constructor(public $scope:IHomeScope, private $state:ng.ui.IStateService, private $ionicHistory, private SampleDataService) {
             console.log('home loaded!');
-            //console.log('data service loaded: ', SampleDataService.getData());
             // 'vm' stands for 'view model'. An additional benefit to this is to prevent primatives getting
             // assigned to the scope directly
             $scope.vm = this;
+            this.data = SampleDataService.getData();
         }
 
         doLogout() {

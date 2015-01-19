@@ -19,7 +19,6 @@ module typeScriptIonicApp.common.directives {
     export class ExampleTagDirectiveController {
         constructor(public $scope:IExampleTagDirectiveScope) {
             $scope.vm = this;
-            console.log('controller constructor ran');
         }
     }
 
