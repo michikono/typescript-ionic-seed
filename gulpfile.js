@@ -15,18 +15,18 @@ var testFilePattern = 'src/**/*.spec.ts';
 var paths = {
   e2e: ['src/**/*.e2e.ts', './lib/definitions/e2e-definitions/**/*.d.ts'],
   sass: ['./assets/scss/**/*.scss', './assets/scss/*.scss'],
-  ts: ['./src/*.ts', './src/**/*.ts', './lib/**/*.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts'],
-  tsds: ['*.d.ts', './tsd/**/*.d.ts', './src/*.d.ts', './src/**/*.d.ts', './lib/definitions/**/*.d.ts', '!./lib/definitions/e2e-definitions/**/*.d.ts', '!./src/**/*.e2e.ts'],
-  tsSpec: ['./src/**/*.spec.ts'],
-  html: ['./src/**/*.html'],
-  lib: ['./lib/**/*.js'],
-  fonts: ['./bower_components/ionic/fonts/*', './assets/fonts/*'],
-  index: ['./assets/index.html'],
-  images: ['./assets/images/*'],
-  testJs: ['./www/test/unit.js']
+  ts: ['src/*.ts', 'src/**/*.ts', 'lib/**/*.ts', '!lib/definitions/e2e-definitions/**/*.d.ts'],
+  tsds: ['*.d.ts', 'tsd/**/*.d.ts', 'src/*.d.ts', 'src/**/*.d.ts', 'lib/definitions/**/*.d.ts', '!lib/definitions/e2e-definitions/**/*.d.ts', '!src/**/*.e2e.ts'],
+  tsSpec: ['src/**/*.spec.ts'],
+  html: ['src/**/*.html'],
+  lib: ['lib/**/*.js'],
+  fonts: ['bower_components/ionic/fonts/*', 'assets/fonts/*'],
+  index: ['assets/index.html'],
+  images: ['assets/images/*'],
+  testJs: ['www/test/unit.js']
 };
 
-gulp.task('default', ['html', 'lib', 'sass', 'fonts', 'images', 'index', 'ts', 'tsTest', 'tsE2E']);
+gulp.task('default', ['html', 'lib', 'css', 'fonts', 'images', 'index', 'ts', 'tsTest', 'tsE2E']);
 
 /*
  * this task re-builds the project before watching it
@@ -50,7 +50,7 @@ gulp.task('watch', function () {
 
 gulp.task('watch-tasks', function () {
   gulp.watch(paths.e2e, ['tsE2E', 'tslint']);
-  gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.sass, ['css']);
   gulp.watch(paths.ts.concat(paths.tsds), ['ts', 'tsTest', 'tsE2E', 'tslint']);
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.fonts, ['fonts']);
@@ -66,23 +66,23 @@ gulp.task('watch-tasks', function () {
 var clean = require('gulp-clean');
 gulp.task('clean', ['cleanCss', 'cleanHtml', 'cleanFonts', 'cleanImages', 'cleanIndex']);
 gulp.task('cleanCss', function () {
-  return gulp.src(['./www/css'], {read: false})
+  return gulp.src(['www/css'], {read: false})
     .pipe(clean());
 });
 gulp.task('cleanFonts', function () {
-  return gulp.src(['./www/fonts'], {read: false})
+  return gulp.src(['www/fonts'], {read: false})
     .pipe(clean());
 });
 gulp.task('cleanImages', function () {
-  return gulp.src(['./www/images'], {read: false})
+  return gulp.src(['www/images'], {read: false})
     .pipe(clean());
 });
 gulp.task('cleanHtml', function () {
-  return gulp.src(['./www/js/template.js'], {read: false})
+  return gulp.src(['www/js/template.js'], {read: false})
     .pipe(clean());
 });
 gulp.task('cleanIndex', function () {
-  return gulp.src(['./www/index.html'], {read: false})
+  return gulp.src(['www/index.html'], {read: false})
     .pipe(clean());
 });
 
@@ -91,9 +91,9 @@ gulp.task('cleanIndex', function () {
  */
 var mainBowerFiles = require('main-bower-files');
 gulp.task('lib', function () {
-  return gulp.src(paths.lib.concat('./bower_components/ionic/js/ionic.bundle.js', mainBowerFiles(), '!**/*.css'))
+  return gulp.src(['bower_components/ionic/js/ionic.bundle.js'].concat(paths.lib, mainBowerFiles(), '!**/*.css'))
     .pipe(concat('lib.js'))
-    .pipe(gulp.dest('./www/js'));
+    .pipe(gulp.dest('www/js'));
 });
 
 /*
@@ -101,7 +101,7 @@ gulp.task('lib', function () {
  */
 gulp.task('fonts', ['cleanFonts'], function () {
   return gulp.src(paths.fonts)
-    .pipe(gulp.dest('./www/fonts'));
+    .pipe(gulp.dest('www/fonts'));
 });
 
 /*
@@ -109,7 +109,7 @@ gulp.task('fonts', ['cleanFonts'], function () {
  */
 gulp.task('images', ['cleanImages'], function () {
   return gulp.src(paths.images)
-    .pipe(gulp.dest('./www/images'));
+    .pipe(gulp.dest('www/images'));
 });
 
 /*
@@ -118,23 +118,21 @@ gulp.task('images', ['cleanImages'], function () {
 gulp.task('index', ['cleanIndex'], function () {
   return gulp.src(paths.index)
     .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest('./www'));
+    .pipe(gulp.dest('www'));
 });
 
 /*
  * compiles CSS from SCSS
  */
-gulp.task('sass', ['cleanCss'], function (done) {
+gulp.task('css', ['cleanCss'], function (done) {
   gulp.src(paths.sass)
     .pipe(sourcemaps.init({debug: true}))
-    .pipe(sass({sync: true}))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./www/css/'))
+    .pipe(sass({errLogToConsole: true, sync: false}))
+    .pipe(gulp.dest('www/css'))
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
-    .pipe(rename({extname: '.min.css'}))
-    .pipe(gulp.dest('./www/css/'))
+    .pipe(sourcemaps.write('map'))
     .on('end', done);
 });
 
@@ -143,7 +141,6 @@ gulp.task('sass', ['cleanCss'], function (done) {
  */
 var ts = require('gulp-typescript');
 var ngAnnotate = require('gulp-ng-annotate');
-var eventStream = require('event-stream');
 var uglify = require('gulp-uglify');
 var tsProject = ts.createProject({
   noImplicitAny: false,
@@ -155,14 +152,14 @@ var tsProject = ts.createProject({
   noExternalResolve: true
 });
 gulp.task('ts', function () {
-  var tsResult = gulp.src(paths.ts.concat(paths.tsds, ['!' + testFilePattern]))
+  return gulp.src(paths.ts.concat(paths.tsds, ['!' + testFilePattern]))
     .pipe(sourcemaps.init({debug: true}))
     .pipe(ts(tsProject))
     .pipe(concat('app.js'))
     .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
     .pipe(uglify({mangle: true}))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./www/js'))
+    .pipe(sourcemaps.write('maps'))
+    .pipe(gulp.dest('www/js'))
 });
 
 var tsTestProject = ts.createProject({
@@ -180,8 +177,8 @@ gulp.task('tsTest', ['ts'], function () {
     .pipe(ts(tsTestProject))
     .pipe(concat('unit.js'))
     .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./www/test'))
+    .pipe(sourcemaps.write('maps'))
+    .pipe(gulp.dest('www/test'))
 });
 
 var tsE2EProject = ts.createProject({
@@ -199,8 +196,8 @@ gulp.task('tsE2E', ['ts'], function () {
     .pipe(ts(tsE2EProject))
     .pipe(concat('e2e.js'))
     .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./www/test'))
+    .pipe(sourcemaps.write('maps'))
+    .pipe(gulp.dest('www/test'))
 });
 
 /*
@@ -236,8 +233,8 @@ gulp.task('html', ['cleanHtml'], function () {
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(templateCache({standalone: true}))
     .pipe(concat('templates.js'))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./www/js'));
+    .pipe(sourcemaps.write('maps'))
+    .pipe(gulp.dest('www/js'));
 });
 
 /*
@@ -246,10 +243,10 @@ gulp.task('html', ['cleanHtml'], function () {
 var karma = require('gulp-karma');
 gulp.task('runJustTest', [], function (done) {
   // Be sure to return the stream
-  // NOTE: Using the fake './foobar' so as to run the files
+  // NOTE: Using the fake 'foobar' so as to run the files
   // listed in karma.conf.js INSTEAD of what was passed to
   // gulp.src !
-  return gulp.src('./foobar')
+  return gulp.src('foobar')
     .pipe(karma({
       configFile: 'karma.conf.js',
       action: 'run'
@@ -257,12 +254,12 @@ gulp.task('runJustTest', [], function (done) {
 });
 
 // compiles AND runs the tests
-gulp.task('test', ['tsTest'], function (done) {
+gulp.task('test', ['tsTest', 'lib', 'html'], function (done) {
   // Be sure to return the stream
-  // NOTE: Using the fake './foobar' so as to run the files
+  // NOTE: Using the fake 'foobar' so as to run the files
   // listed in karma.conf.js INSTEAD of what was passed to
   // gulp.src !
-  return gulp.src('./foobar')
+  return gulp.src('foobar')
     .pipe(karma({
       configFile: 'karma.conf.js',
       action: 'run'

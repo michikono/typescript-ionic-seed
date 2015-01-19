@@ -9,6 +9,6 @@ module typeScriptIonicApp {
         }
     }
 
-    export var app:ng.IModule = angular.module('typeScriptIonicApp');
+    export var app:ng.IModule = app || angular.module('typeScriptIonicApp');
     app.controller('AppController', AppController);
 }

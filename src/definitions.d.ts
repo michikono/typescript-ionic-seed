@@ -9,9 +9,16 @@
  *  but may in others!
  *******/
 
-/// <reference path='./components/home/HomeController.ts' />
+/// <reference path='main.ts' />
 
-/// <reference path='./components/login/LoginController.ts' />
+/// <reference path='layout/AppController.ts' />
+/// <reference path='layout/IAppScope.ts' />
 
 /// <reference path='common/ICoreScope.d.ts' />
 /// <reference path='common/directives/example_tag/ExampleTag.ts' />
+/// <reference path='common/services/SampleData.ts' />
+
+/// <reference path='components/home/HomeController.ts' />
+/// <reference path='components/login/LoginController.ts' />
+
+
