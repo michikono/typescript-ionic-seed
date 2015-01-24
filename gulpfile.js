@@ -15,7 +15,7 @@ var testFilePattern = 'src/**/*.spec.ts';
 var paths = {
   e2e: ['src/**/*.e2e.ts', './lib/definitions/e2e-definitions/**/*.d.ts'],
   sass: ['./assets/scss/**/*.scss', './assets/scss/*.scss'],
-  ts: ['src/*.ts', 'src/**/*.ts', 'lib/**/*.ts', '!lib/definitions/e2e-definitions/**/*.d.ts'],
+  ts: ['src/*.ts', 'src/**/*.ts', 'lib/**/*.ts', '!lib/definitions/e2e-definitions/**/*.d.ts', '!src/*.js', '!src/**/*.js'],
   tsds: ['*.d.ts', 'tsd/**/*.d.ts', 'src/*.d.ts', 'src/**/*.d.ts', 'lib/definitions/**/*.d.ts', '!lib/definitions/e2e-definitions/**/*.d.ts', '!src/**/*.e2e.ts'],
   tsSpec: ['src/**/*.spec.ts'],
   html: ['src/**/*.html'],
@@ -94,7 +94,7 @@ gulp.task('lib', function () {
   return gulp.src(['bower_components/ionic/js/ionic.bundle.js'].concat(paths.lib, mainBowerFiles(), '!**/*.css'))
     .pipe(sourcemaps.init({debug: true}))
     .pipe(concat('lib.js'))
-    .pipe(sourcemaps.write('maps'))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('www/js'));
 });
 
@@ -128,13 +128,13 @@ gulp.task('index', ['cleanIndex'], function () {
  */
 gulp.task('css', ['cleanCss'], function (done) {
   gulp.src(paths.sass)
-    .pipe(sourcemaps.init({debug: true}))
-    .pipe(sass({errLogToConsole: true, sync: false}))
-    .pipe(gulp.dest('www/css'))
+    .pipe(sourcemaps.init())
+    .pipe(sass({errLogToConsole: true, sync: true}))
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
-    .pipe(sourcemaps.write('map'))
+    .pipe(sourcemaps.write('./map'))
+    .pipe(gulp.dest('www/css'))
     .on('end', done);
 });
 
@@ -160,7 +160,7 @@ gulp.task('ts', function () {
     .pipe(concat('app.js'))
     .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
     .pipe(uglify({mangle: true}))
-    .pipe(sourcemaps.write('maps'))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('www/js'))
 });
 
@@ -179,7 +179,7 @@ gulp.task('tsTest', ['ts'], function () {
     .pipe(ts(tsTestProject))
     .pipe(concat('unit.js'))
     .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
-    .pipe(sourcemaps.write('maps'))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('www/test'))
 });
 
@@ -198,14 +198,13 @@ gulp.task('tsE2E', ['ts'], function () {
     .pipe(ts(tsE2EProject))
     .pipe(concat('e2e.js'))
     .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
-    .pipe(sourcemaps.write('maps'))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('www/test'))
 });
 
 /*
  * runs TypeScript linter
  */
-var plumber = require('gulp-plumber');
 var tslint = require('gulp-tslint');
 gulp.task('tslint', [], function () {
   gulp.src(['src/**/*.ts', '!src/**/*.d.ts'])
@@ -235,7 +234,7 @@ gulp.task('html', ['cleanHtml'], function () {
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(templateCache({standalone: true}))
     .pipe(concat('templates.js'))
-    .pipe(sourcemaps.write('maps'))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('www/js'));
 });
 
