@@ -1,4 +1,4 @@
-/// <reference path="angular-ui/angular-ui-router.d.ts" />
+/// <reference path="angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="angularjs/angular-mocks.d.ts" />
 /// <reference path="angularjs/angular.d.ts" />
 /// <reference path="cordova/cordova.d.ts" />
