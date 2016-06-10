@@ -1,13 +1,13 @@
 sudo: false
 language: node_js
 node_js:
-  - "0.10"
+  - "v6.2.1"
 
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - npm install -g typescript
-  - npm install tsd@next -g
+  - npm install -g typings
   - npm install -g gulp
   - npm install -g ionic
   - npm install -g bower

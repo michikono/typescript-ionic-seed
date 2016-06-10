@@ -88,7 +88,7 @@ Cucumber tests are located at `features/**/*.feature` -- these were placed outsi
 Adding dependencies
 -----------------------
 
-* For [TSDs](http://definitelytyped.org/tsd/) (to have TypeScript detection), use `tsd install <package> --save`. This may break the `.tsd.d.ts` file -- if this happens, just review the generated file paths carefully before proceeding.
+* For [typings](http://definitelytyped.org/) (to have TypeScript detection), use `typings install dt~<package> --ambient --save`. For more information about how to use typings, see [typings](https://github.com/typings/typings)
 * For bower (things used in the browser), use `bower install <package> --save`
 * For npm (things used to build stuff), use `npm install <package> --save-dev`
 * For 3rd party, non-TSD definitions, placed them in `lib/definitions/`, and don't touch `lib/definitions/e2e-definitions/` unless you want something added to the E2E test build
@@ -116,7 +116,7 @@ Notes
 
 * The `module` syntax is used to create actual TypeScript modules -- code inside a module is scoped to it. Each feature folder uses its own module name and the shared scope is used in the unit tests to access the declarations without requiring verbose prefixes.
 * The `angular.module` syntax is an Angular thing for componentizing code. To avoid confusion, wherever possible, the two types of module references should be the same in a file/feature.
-* You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused (see next caveat); if anything breaks in your `tsd/tsd.d.ts` file, [double check the paths didn't get munged](https://github.com/DefinitelyTyped/tsd/issues/112)
+* You will need to add new `src/**/.ts` files to `src/definitions.d.ts` to ensure the TypeScript compiler doesn't get confused
 * When creating interfaces in `.d.ts` files, you can declare them by [prefixing the `module` declaration with `declare`](http://stackoverflow.com/questions/17635033/error-ts1046-declare-modifier-required-for-top-level-element).
 * Always assume the `www/` folder is scratch space -- including `index.html`!
 * Place images, fonts, scss, etc. in `assets/`

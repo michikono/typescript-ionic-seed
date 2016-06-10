@@ -17,13 +17,13 @@ module typeScriptIonicApp.common.directives {
     }
 
     export class ExampleTagDirectiveController {
-        constructor(public $scope:IExampleTagDirectiveScope) {
+        constructor(public $scope: IExampleTagDirectiveScope) {
             $scope.vm = this;
         }
     }
 
     // this module is re-declared per directive
-    export var app:ng.IModule = app || angular.module('typeScriptIonicApp.common.directives', ['templates', 'ionic']);
+    export var app: ng.IModule = app || angular.module('typeScriptIonicApp.common.directives', ['templates', 'ionic']);
     app.directive('exampleTag', () => new ExampleTagDirective());
     app.controller('ExampleTagDirectiveController', ExampleTagDirectiveController);
 

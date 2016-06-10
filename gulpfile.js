@@ -16,7 +16,7 @@ var paths = {
   e2e: ['src/**/*.e2e.ts', './lib/definitions/e2e-definitions/**/*.d.ts'],
   sass: ['./assets/scss/**/*.scss', './assets/scss/*.scss'],
   ts: ['src/*.ts', 'src/**/*.ts', 'lib/**/*.ts', '!lib/definitions/e2e-definitions/**/*.d.ts', '!src/*.js', '!src/**/*.js'],
-  tsds: ['*.d.ts', 'tsd/**/*.d.ts', 'src/*.d.ts', 'src/**/*.d.ts', 'lib/definitions/**/*.d.ts', '!lib/definitions/e2e-definitions/**/*.d.ts', '!src/**/*.e2e.ts'],
+  typings: ['*.d.ts', 'typings/**/*.d.ts', 'src/*.d.ts', 'src/**/*.d.ts', 'lib/definitions/**/*.d.ts', '!lib/definitions/e2e-definitions/**/*.d.ts', '!src/**/*.e2e.ts'],
   tsSpec: ['src/**/*.spec.ts'],
   html: ['src/**/*.html'],
   lib: ['lib/**/*.js'],
@@ -51,14 +51,14 @@ gulp.task('watch', function () {
 gulp.task('watch-tasks', function () {
   gulp.watch(paths.e2e, ['tsE2E', 'tslint']);
   gulp.watch(paths.sass, ['css']);
-  gulp.watch(paths.ts.concat(paths.tsds), ['ts', 'tsTest', 'tsE2E', 'tslint']);
+  gulp.watch(paths.ts.concat(paths.typings), ['ts', 'tsTest', 'tsE2E', 'tslint']);
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.fonts, ['fonts']);
   gulp.watch(paths.images, ['images']);
   gulp.watch(paths.index, ['index']);
   gulp.watch(paths.lib, ['lib']);
   gulp.watch(paths.testJs, ['runJustTest']);
-})
+});
 
 /*
  * purges all generated files
@@ -154,7 +154,7 @@ var tsProject = ts.createProject({
   noExternalResolve: true
 });
 gulp.task('ts', function () {
-  return gulp.src(paths.ts.concat(paths.tsds, ['!' + testFilePattern]))
+  return gulp.src(paths.ts.concat(paths.typings, ['!' + testFilePattern]))
     .pipe(sourcemaps.init({debug: true}))
     .pipe(ts(tsProject))
     .pipe(concat('app.js'))
