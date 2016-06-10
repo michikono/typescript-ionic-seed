@@ -51,6 +51,7 @@
     "gulp-ng-annotate": "^2.0.0",
     "gulp-notify": "^2.2.0",
     "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-ts": "0.3.0",
