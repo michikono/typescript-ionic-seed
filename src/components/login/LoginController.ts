@@ -10,10 +10,12 @@ module typeScriptIonicApp.components.login {
     }
 
     export class LoginController {
-        public username:string;
-        public password:string;
+        public username: string;
+        public password: string;
 
-        constructor(public $scope:ILoginScope, private $state:ng.ui.IStateService, private $ionicHistory) {
+        constructor(public $scope: ILoginScope, 
+                    private $state: ng.ui.IStateService, 
+                    private $ionicHistory: ionic.navigation.IonicHistoryService) {
             this.username = 'default';
             console.log('Login loaded');
             // 'vm' stands for 'view model'. An additional benefit to this is to prevent primatives getting

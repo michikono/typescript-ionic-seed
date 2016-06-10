@@ -1,5 +1,4 @@
 /// <reference path='./definitions.d.ts' />
-
 // this hide message errors from compiler
 interface Window {
     cordova: any;
@@ -7,7 +6,7 @@ interface Window {
 }
 
 module typeScriptIonicApp {
-    export var app:ng.IModule = angular.module('typeScriptIonicApp', [
+    export var app: ng.IModule = angular.module('typeScriptIonicApp', [
         'ionic',
         'templates',
         'typeScriptIonicApp.common.services',
@@ -16,8 +15,8 @@ module typeScriptIonicApp {
         'typeScriptIonicApp.components.login'
     ]);
 
-    app.run(function ($ionicPlatform) {
-        $ionicPlatform.ready(function () {
+    app.run(($ionicPlatform: ionic.platform.IonicPlatformService) => {
+        $ionicPlatform.ready(() => {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -31,7 +30,7 @@ module typeScriptIonicApp {
         });
     });
 
-    app.config(function ($stateProvider, $urlRouterProvider) {
+    app.config(($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) => {
         $stateProvider.state('app', {
             url: '/app',
             abstract: true,

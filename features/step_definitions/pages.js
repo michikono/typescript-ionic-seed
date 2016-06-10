@@ -3,13 +3,13 @@ chai.use(require('chai-as-promised'));
 var expect = chai.expect;
 
 var steps = function () {
-  var Given = When = Then = this.defineStep
+  var Given = When = Then = this.defineStep;
 
   // centralize page definitions and navigation to them
   var pages = {
     'home': '/app/home',
     'login': '/app/login'
-  }
+  };
 
   Given(/visit the (\w+) page$/, function (pageName, next) {
     this.browser.get('http://localhost:8000/#' + pages[pageName]);

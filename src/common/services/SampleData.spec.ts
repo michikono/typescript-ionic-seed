@@ -2,13 +2,13 @@
 
 module typeScriptIonicApp.common.services {
     describe('SampleDataService', function () {
-        var $log:ng.ILogService, SampleDataService:ISampleData;
+        var $log: ng.ILogService, SampleDataService: ISampleData;
 
         beforeEach(function () {
             angular.mock.module('typeScriptIonicApp.common.services');
         });
 
-        beforeEach(inject(function (_SampleDataService_:ISampleData, _$log_:ng.ILogService) {
+        beforeEach(inject(function (_SampleDataService_: ISampleData, _$log_: ng.ILogService) {
             $log = _$log_;
             SampleDataService = _SampleDataService_;
         }));
